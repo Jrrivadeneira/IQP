@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ public class MainUI extends JFrame implements UI{
 	private static final long serialVersionUID = 904208402458521466L;
 
 	private Controller ctrl;
+	private JButton newPatient, patientQueue, settings, logout;
 	
 	
 	/**
@@ -28,38 +30,61 @@ public class MainUI extends JFrame implements UI{
 		this.setExtendedState(this.getExtendedState() | MAXIMIZED_BOTH);// Makes the window maximized
 		this.setUndecorated(true); // removes the window's top bar and borders.
 		this.setAlwaysOnTop(true); // makes the window always above every other application that runs.
-		this.addController(c);
-		this.buildUI();
+		this.addController(c); // adds the controller
+		this.buildUI(); // makes the actual UI
 		this.setVisible(true); // the window isn't visible until this line.
-		say("Visible!");
-		
+		say("Visible!");	
 	}
 	
-	JButton newPatient;
+	public void dispose(){
+		say("closing...");
+		super.dispose();
+	}
 	
 	
 	public void buildUI(){
+		newPatient = new JButton("New Patient");
+		this.addComponent(newPatient, "new patient");
+		this.add(newPatient,BorderLayout.CENTER);
 		
+		patientQueue = new JButton("Patient Queue");
+		this.addComponent(patientQueue, "patient queue");
+		patientQueue.setPreferredSize(new Dimension(200,100));
+		this.add(patientQueue,BorderLayout.WEST);
+		
+		JPanel southwest = new JPanel();
+		southwest.setLayout(new BorderLayout());
+		
+		settings = new JButton("Settings");
+		this.addComponent(settings, "settings");
+		southwest.add(settings,BorderLayout.CENTER);
+		
+		logout = new JButton("Logout");
+		logout.setPreferredSize(new Dimension(400,300));
+		this.addComponent(logout, "logout");
+		southwest.add(logout, BorderLayout.WEST);
+		this.add(southwest,BorderLayout.SOUTH);
+		this.pack();
 	}
 	
-	public void addComponent(JButton c,String name){
+	private void addComponent(JButton c, String name){
 		say("Adding Button: " + name);
 		c.setName(name);
 		c.addActionListener(ctrl);
-		add(c);
+//		add(c);
 		say("Button added.");
 	}
 	
-	public void addComponent(JTextField c, String name){
-		say("Adding Text Field: " + name);
-		c.setName(name);
-		say("Name set.");
-		say("Adding controller...");
-		c.addActionListener(ctrl);
-		say("Controller added.");
-		add(c);
-		say("Text Field Added.");
-	}
+//	private void addComponent(JTextField c, String name){
+//		say("Adding Text Field: " + name);
+//		c.setName(name);
+//		say("Name set.");
+//		say("Adding controller...");
+//		c.addActionListener(ctrl);
+//		say("Controller added.");
+//		add(c);
+//		say("Text Field Added.");
+//	}
 	
 	public void addController(Controller c){
 		say("adding controller...");
@@ -70,15 +95,11 @@ public class MainUI extends JFrame implements UI{
 		ctrl.addUI(this);
 	}
 
-	@Override
 	public void say(String s) {
-		// TODO Auto-generated method stub
 		System.out.println("MainUI: " + s);
 	}
 
-	@Override
 	public JComponent getComponentByName(String s) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

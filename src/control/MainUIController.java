@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import ui.MainUI;
+
+import javax.swing.JComponent;
+
+//import ui.MainUI;
 import ui.UI;
 
 public class MainUIController implements Controller {
@@ -31,7 +34,14 @@ public class MainUIController implements Controller {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		String s = ((JComponent) e.getSource()).getName();
+		say(s);
+		if(s.equals("logout")){
+			this.mui.dispose();
+			say("Switching to login screen");
+			core.Major.makeLogin();
 
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {

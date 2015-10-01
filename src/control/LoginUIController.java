@@ -6,28 +6,29 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
+import ui.MainUI;
 import ui.UI;
 
 public class LoginUIController implements Controller {
 
 	private boolean verified = true;
 	private UI login;
-	
-	public boolean isValid(){
+
+	public boolean isValid() {
 		return verified;
 	}
-	
+
 	public LoginUIController() {
 		this.say("Start.");
 
 	}
 
-	private boolean verify(Object o){
+	private boolean verify(Object o) {
 		return true;
 	}
-	
-	public void addUI(UI u){
-		this.login=u;
+
+	public void addUI(UI u) {
+		this.login = u;
 	}
 
 	public void keyTyped(KeyEvent e) {
@@ -65,14 +66,16 @@ public class LoginUIController implements Controller {
 	public void actionPerformed(ActionEvent e) {
 		String s = ((JComponent) e.getSource()).getName();
 		say(s);
-		if(s.equals("username")){
+		if (s.equals("username")) {
 			this.login.getComponentByName("password").requestFocus();
 		}
-		if("signin password".contains(s)){
+		if ("signin password".contains(s)) {
 			say("validating login...");
-			if(this.verify(null)){
+			if (this.verify(null)) {
 				say("verified.");
 				login.dispose();
+				MainUIController mc = new MainUIController();
+				new MainUI(mc);
 			}
 		}
 	}

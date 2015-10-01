@@ -8,8 +8,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import control.Controller;
-import control.MainUIController;
-
 import java.util.HashMap;
 
 public class LoginUI extends JFrame implements UI {
@@ -38,11 +36,7 @@ public class LoginUI extends JFrame implements UI {
 	}
 	
 	public void dispose(){
-		say("Closing.");
-		if(((control.LoginUIController)ctrl).isValid()){
-			MainUIController mc = new MainUIController();
-			new MainUI(mc);
-		}
+		say("Closing...");
 		super.dispose();
 	}
 

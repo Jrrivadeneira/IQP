@@ -9,11 +9,19 @@ import ui.MainUI;
 public class Major {
 	public static void main(String[] args) {
 		System.out.println("Start!");
+		makeLogin();
+	}
+	
+	public static void makeLogin(){
 		LoginUIController luc = new LoginUIController();
-		LoginUI lui = new LoginUI(luc);
-
-//		MainUIController muc = new MainUIController();
-//		MainUI mui = new MainUI(muc);
+		new LoginUI(luc);
+	}
+	
+	public static void makeMainUI(){
+		MainUIController muc = new MainUIController();
+		new MainUI(muc);
 
 	}
+	
+	
 }
