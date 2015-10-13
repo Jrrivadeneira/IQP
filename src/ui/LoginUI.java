@@ -29,8 +29,8 @@ public class LoginUI extends JFrame implements UI {
 		this.setLayout(null);
 		this.setTitle("LoginUI");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.addController(c);
 		
+		this.addController(c);
 		this.buildUI();
 		this.setVisible(true);
 	}

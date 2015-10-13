@@ -1,5 +1,6 @@
 package model;
 
-public class Model {
-
+public interface Model {
+	public void say(String s);
+	
 }

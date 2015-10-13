@@ -84,4 +84,10 @@ public class LoginUIController implements Controller {
 		System.out.println("LoginUIController: " + s);
 	}
 
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

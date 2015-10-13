@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -16,6 +17,8 @@ public class MainUI extends JFrame implements UI{
 	private Controller ctrl;
 	private JButton newPatient, patientQueue, settings, logout;
 	
+
+	private HashMap<String, JComponent> components;
 	
 	/**
 	 * This is the constructor for the main UI.
@@ -33,7 +36,7 @@ public class MainUI extends JFrame implements UI{
 		this.addController(c); // adds the controller
 		this.buildUI(); // makes the actual UI
 		this.setVisible(true); // the window isn't visible until this line.
-		say("Visible!");	
+		say("Visible!");
 	}
 	
 	public void dispose(){
@@ -99,8 +102,8 @@ public class MainUI extends JFrame implements UI{
 		System.out.println("MainUI: " + s);
 	}
 
-	public JComponent getComponentByName(String s) {
-		return null;
+	public JComponent getComponentByName(String s){
+		return components.get(s);
 	}
-
+	
 }

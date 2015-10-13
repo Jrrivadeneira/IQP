@@ -9,4 +9,5 @@ import ui.UI;
 public interface Controller extends KeyListener,MouseListener,ActionListener{
 	public void say(String s);
 	public void addUI(UI u);
+	public void dispose();
 }
