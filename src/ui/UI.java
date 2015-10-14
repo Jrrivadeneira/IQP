@@ -13,6 +13,13 @@ public interface UI {
 	 */
 	public abstract void addController(Controller c);
 
+	/**
+	 * Prints the given string with the class name as a prefix. Will only print
+	 * if verbose output is enabled.
+	 * 
+	 * @param s
+	 *            String- The string to be printed;
+	 */
 	public abstract void say(String s);
 
 	/**

@@ -2,28 +2,22 @@ package ui;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import control.Controller;
-
 import java.util.HashMap;
 
-public class LoginUI extends JFrame implements UI {
+public class LoginUI extends FrameUI {
 
 	/**
 	 * Written by Jack Rivadeneira
 	 */
 	private static final long serialVersionUID = 1242665369571041954L;
 
-	private Controller ctrl;
 	private JTextField username;
 	private JPasswordField password;
 	private JButton signIn;
-
-	private HashMap<String, JComponent> components;
 
 	/**
 	 * Constructor for the LoginUI
@@ -32,24 +26,8 @@ public class LoginUI extends JFrame implements UI {
 	 *            the controller to be used for this ui.
 	 */
 	public LoginUI(Controller c) {
-		this.setSize(800, 600);
-		this.setLayout(null);
+		super(c);
 		this.setTitle("LoginUI");
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		this.addController(c);
-		this.buildUI();
-		this.setVisible(true);
-	}
-
-	public void dispose() {
-		say("Closing...");
-		super.dispose();
-	}
-
-	
-	public JComponent getComponentByName(String s) {
-		return components.get(s);
 	}
 
 	/**
@@ -94,28 +72,6 @@ public class LoginUI extends JFrame implements UI {
 		say("Text field added.");
 	}
 
-	public void addController(Controller c) {
-		say("adding controller...");
-		this.ctrl = c;
-		this.addKeyListener(c);
-		this.addMouseListener(c);
-		say("controller added.");
-		this.ctrl.addUI(this);
-	}
-
-	/**
-	 * Prints the given string with the classname as a prefix. Will only print
-	 * if verbose output is enabled.
-	 * 
-	 * @param s
-	 *            String- The string to be printed;
-	 */
-	public void say(String s) {
-		if (core.Major.verboseOutputEnabled)
-			System.out.println(this.getClass().getName().split("\\.")[1] + ": "
-					+ s);
-	}
-
 	/**
 	 * Sets user focus to the password field.
 	 */
@@ -126,6 +82,7 @@ public class LoginUI extends JFrame implements UI {
 	}
 
 	public void buildUI() {
+		this.setLayout(null);
 		components = new HashMap<String, JComponent>();
 		JLabel userlabel = new JLabel("Username");
 		userlabel.setSize(100, 32);
@@ -148,5 +105,4 @@ public class LoginUI extends JFrame implements UI {
 		this.signIn.setText("Sign In");
 		this.addComponent(signIn, "signin");
 	}
-
 }
