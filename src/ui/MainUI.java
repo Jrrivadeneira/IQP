@@ -69,25 +69,18 @@ public class MainUI extends JFrame implements UI{
 		this.add(southwest,BorderLayout.SOUTH);
 		this.pack();
 	}
-	
+	/**
+	 * gives the component a name and adds the controller as the component's action listener.
+	 * @param c
+	 * @param name
+	 */
 	private void addComponent(JButton c, String name){
 		say("Adding Button: " + name);
 		c.setName(name);
 		c.addActionListener(ctrl);
-//		add(c);
 		say("Button added.");
 	}
 	
-//	private void addComponent(JTextField c, String name){
-//		say("Adding Text Field: " + name);
-//		c.setName(name);
-//		say("Name set.");
-//		say("Adding controller...");
-//		c.addActionListener(ctrl);
-//		say("Controller added.");
-//		add(c);
-//		say("Text Field Added.");
-//	}
 	
 	public void addController(Controller c){
 		say("adding controller...");
@@ -98,8 +91,16 @@ public class MainUI extends JFrame implements UI{
 		ctrl.addUI(this);
 	}
 
+	/**
+	 * Prints the given string with the classname as a prefix. Will only print
+	 * if verbose output is enabled.
+	 * 
+	 * @param s
+	 *            String- The string to be printed;
+	 */
 	public void say(String s) {
-		System.out.println("MainUI: " + s);
+		if (core.Major.verboseOutputEnabled)
+			System.out.println(this.getClass().getName().split("\\.")[1] + ": " + s);
 	}
 
 	public JComponent getComponentByName(String s){

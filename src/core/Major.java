@@ -6,6 +6,7 @@ import ui.LoginUI;
 import ui.MainUI;
 
 public class Major {
+	public static boolean verboseOutputEnabled = true;
 		
 	public static void main(String[] args) {
 		System.out.println("Start!");

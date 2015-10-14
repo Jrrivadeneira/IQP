@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import control.Controller;
+
 import java.util.HashMap;
 
 public class LoginUI extends JFrame implements UI {
@@ -24,26 +25,41 @@ public class LoginUI extends JFrame implements UI {
 
 	private HashMap<String, JComponent> components;
 
+	/**
+	 * Constructor for the LoginUI
+	 * 
+	 * @param c
+	 *            the controller to be used for this ui.
+	 */
 	public LoginUI(Controller c) {
-		this.setSize(800,600);
+		this.setSize(800, 600);
 		this.setLayout(null);
 		this.setTitle("LoginUI");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		this.addController(c);
 		this.buildUI();
 		this.setVisible(true);
 	}
-	
-	public void dispose(){
+
+	public void dispose() {
 		say("Closing...");
 		super.dispose();
 	}
 
-	public JComponent getComponentByName(String s){
+	
+	public JComponent getComponentByName(String s) {
 		return components.get(s);
 	}
-	
+
+	/**
+	 * Adds a component to the ui properly.
+	 * 
+	 * @param c
+	 *            The component to be added.
+	 * @param name
+	 *            The name of the component to be added.
+	 */
 	private void addComponent(JButton c, String name) {
 		say("Adding button: " + name);
 		c.setName(name);
@@ -57,6 +73,14 @@ public class LoginUI extends JFrame implements UI {
 		say("Button added.");
 	}
 
+	/**
+	 * Adds a component to the ui properly.
+	 * 
+	 * @param c
+	 *            The component to be added.
+	 * @param name
+	 *            The name of the component to be added.
+	 */
 	private void addComponent(JTextField c, String name) {
 		say("Adding text field: " + name);
 		c.setName(name);
@@ -79,17 +103,30 @@ public class LoginUI extends JFrame implements UI {
 		this.ctrl.addUI(this);
 	}
 
+	/**
+	 * Prints the given string with the classname as a prefix. Will only print
+	 * if verbose output is enabled.
+	 * 
+	 * @param s
+	 *            String- The string to be printed;
+	 */
 	public void say(String s) {
-		System.out.println("LoginUI: " + s);
+		if (core.Major.verboseOutputEnabled)
+			System.out.println(this.getClass().getName().split("\\.")[1] + ": "
+					+ s);
 	}
 
+	/**
+	 * Sets user focus to the password field.
+	 */
 	public void focusPassword() {
+		say("Setting focus to password field...");
 		password.requestFocus();
-
+		say("Done!");
 	}
 
 	public void buildUI() {
-		components = new HashMap<String,JComponent>();
+		components = new HashMap<String, JComponent>();
 		JLabel userlabel = new JLabel("Username");
 		userlabel.setSize(100, 32);
 		userlabel.setLocation(220, 400);
