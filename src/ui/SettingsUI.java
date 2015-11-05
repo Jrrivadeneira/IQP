@@ -31,6 +31,9 @@ public class SettingsUI extends FrameUI {
 		this.back.setName("back");
 		this.back.addActionListener(this.ctrl);
 		this.add(back, BorderLayout.WEST);
+	}
+
+	public void showChangePasswordDialog() {
 
 	}
 
