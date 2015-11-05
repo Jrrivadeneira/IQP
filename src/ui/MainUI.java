@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import control.Controller;
 
@@ -46,7 +45,6 @@ public class MainUI extends FrameUI {
 
 		JPanel southwest = new JPanel();
 		southwest.setLayout(new BorderLayout(padding, 0));
-		// southwest.setBorder(mt);
 
 		settings = new JButton("Settings");
 		this.addComponent(settings, "settings");
