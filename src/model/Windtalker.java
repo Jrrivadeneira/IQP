@@ -3,7 +3,16 @@ package model;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * This is our database interaction object used to store and retrieve data from
+ * the database. To accomplish this it uses an external library called
+ * mysql-connector-java for a database driver for the mysql database.
+ */
 public class Windtalker implements Model {
+	/**
+	 * Written by Jack Rivadeneira
+	 */
+
 	private String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
 	private String MYSQL_URL = "jdbc:mysql://localhost:3306/SCHOOL";
 	private Connection con;
@@ -11,6 +20,9 @@ public class Windtalker implements Model {
 	private boolean verbose = true;
 	private ResultSet rs;
 
+	/**
+	 * Constructor for the windtalker object.
+	 */
 	public Windtalker() {
 		try {
 			say("Loading class...");
@@ -37,7 +49,10 @@ public class Windtalker implements Model {
 		}
 	}
 
-	public void closeConnection() {
+	/**
+	 * Closes the connection to the database.
+	 */
+	private void closeConnection() {
 		try {
 			con.close();
 		} catch (Exception ex) {
@@ -45,6 +60,12 @@ public class Windtalker implements Model {
 		}
 	}
 
+	/**
+	 * Executes a given sql string.
+	 * 
+	 * @param statement
+	 *            to be executed.
+	 */
 	private void executeStatement(String statement) {
 		say("Executing: " + statement);
 		try {
@@ -56,11 +77,23 @@ public class Windtalker implements Model {
 		say("Succeeded.");
 	}
 
+	/**
+	 * Executes an array of statements.
+	 * 
+	 * @param statements
+	 *            The array of statements to be executed
+	 */
 	private void executeStatements(String[] statements) {
 		for (String s : statements)
 			executeStatement(s);
 	}
 
+	/**
+	 * Executes a given select statement.
+	 * 
+	 * @param statement
+	 *            to be executed
+	 */
 	private void executeSelectStatement(String statement) {
 		say("Executing: " + statement);
 		try {
@@ -72,6 +105,9 @@ public class Windtalker implements Model {
 		say("Succeeded.");
 	}
 
+	/**
+	 * Deletes the contents of the database.
+	 */
 	private void wipeout() {
 		String statements[] = { "DROP TABLE Patients", "DROP TABLE Hospitals",
 				"DROP TABLE EMS", "DROP TABLE EMT", "DROP TABLE Vitals" };
@@ -117,11 +153,17 @@ public class Windtalker implements Model {
 		wt.closeConnection();
 	}
 
+	/**
+	 * Standard output for this class
+	 */
 	public void say(String s) {
 		if (verbose)
 			System.out.println("Windtalker: " + s);
 	}
 
+	/**
+	 * Will add a given patient to the database.
+	 */
 	public void addPatient() {
 
 	}
@@ -155,6 +197,9 @@ public class Windtalker implements Model {
 		return hospitals;
 	}
 
+	/**
+	 * @returns Returns a list of all emts in the database
+	 */
 	public ArrayList<EMT> getEMTs() {
 		executeSelectStatement("SELECT * FROM EMT");
 		ArrayList<EMT> emts = new ArrayList<EMT>();
@@ -169,13 +214,24 @@ public class Windtalker implements Model {
 		return emts;
 	}
 
+	/**
+	 * Adds the given EMS unit to the database
+	 * 
+	 * @param ems
+	 *            the EMS unit to be added to the database
+	 */
 	public void addEMS(EMS ems) {
-
+		this.executeStatement("INSERT INTO EMS (EMS_ID) VALUES ("
+				+ ems.toString() + ");");
 	}
 
+	/**
+	 * Adds the given emt object to the database.
+	 * 
+	 * @param e
+	 *            - The object to be added to the database
+	 */
 	public void addEMT(EMT e) {
-		// this.executeStatement("INSERT INTO EMT (EMT_ID, EMS_ID, EMT_NAME, EMT_USERNAME, EMT_PASSWORD) VALUES ("
-		// + e.toString() + ");");
 		try {
 			PreparedStatement stmt = this.con
 					.prepareStatement("INSERT INTO EMT (EMT_ID, EMS_ID, EMT_NAME, EMT_USERNAME, EMT_PASSWORD) VALUES ("
@@ -183,12 +239,20 @@ public class Windtalker implements Model {
 			stmt.setBytes(1, e.getPassword());
 			stmt.execute();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Validates the login for an EMT with a given username and password.
+	 * 
+	 * @param username
+	 *            - username of the EMT
+	 * @param password
+	 *            - password of the EMT
+	 * @return Returns true if the validation was successful. If it failed then
+	 *         the login is aborted.
+	 */
 	public boolean validateLogin(String username, String password) {
 		say("Validating Login");
 		EMT mt = null;
@@ -209,6 +273,15 @@ public class Windtalker implements Model {
 		return false;
 	}
 
+	/**
+	 * This is for login. The username and password should be passed to this in
+	 * order to validate the login. If the login is valid then it will sign in
+	 * that EMT.
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public EMT getEMT(String username, String password) {
 		if (!validateLogin(username, password)) {
 			say("Could not validate username password combination");
@@ -238,7 +311,10 @@ public class Windtalker implements Model {
 		return mt;
 	}
 
-	public void addVitals() {
-
+	/**
+	 * Adds a vital sign reading to the database.
+	 */
+	public void addVitals(Vitals v) {
+		executeStatement(v.getInsertStatement());
 	}
 }
