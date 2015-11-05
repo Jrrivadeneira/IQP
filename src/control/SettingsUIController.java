@@ -6,8 +6,10 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
+import components.ChangePasswordDialog;
+
 import ui.UI;
-import ui.SettingsUI;
+//import ui.SettingsUI;
 
 public class SettingsUIController implements Controller {
 
@@ -74,8 +76,8 @@ public class SettingsUIController implements Controller {
 //		String oldPass = new String();
 //		String newPass = new String();
 //		String newPassConfirm = new String();
-		SettingsUI u = (SettingsUI)sui;
-		u.showChangePasswordDialog();
+		new ChangePasswordDialog();
+//		SettingsUI u = (SettingsUI)sui;
 	}
 
 	public void actionPerformed(ActionEvent e) {

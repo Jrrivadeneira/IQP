@@ -24,13 +24,20 @@ public class SettingsUI extends FrameUI {
 	}
 
 	public void buildUI() {
+		this.setTitle("SettingsUI");
 		this.changePassword = new JButton("change password");
+		this.changePassword.setName("change password");
+		this.changePassword.addActionListener(this.ctrl);
+		this.add(this.changePassword, BorderLayout.SOUTH);
 		this.uiTweaks = new JButton("ui tweaks");
+
 		this.addHospital = new JButton("add hospital");
+
 		this.back = new JButton("Back");
 		this.back.setName("back");
 		this.back.addActionListener(this.ctrl);
 		this.add(back, BorderLayout.WEST);
+
 	}
 
 	public void showChangePasswordDialog() {
