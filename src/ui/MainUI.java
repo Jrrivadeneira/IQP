@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import control.Controller;
 
@@ -14,6 +16,7 @@ public class MainUI extends FrameUI {
 	private static final long serialVersionUID = 904208402458521466L;
 
 	private JButton newPatient, patientQueue, settings, logout;
+	Border mt;
 
 	/**
 	 * This is the constructor for the main UI.
@@ -24,17 +27,26 @@ public class MainUI extends FrameUI {
 	}
 
 	public void buildUI() {
+		int padding = 30;
+		mt = BorderFactory
+				.createEmptyBorder(padding, padding, padding, padding);
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout(padding, padding));
+		mainPanel.setBorder(mt);
+		this.setLayout(new BorderLayout(padding, 0));
+
 		newPatient = new JButton("New Patient");
 		this.addComponent(newPatient, "new patient");
-		this.add(newPatient, BorderLayout.CENTER);
+		mainPanel.add(newPatient, BorderLayout.CENTER);
 
 		patientQueue = new JButton("Patient Queue");
 		this.addComponent(patientQueue, "patient queue");
 		patientQueue.setPreferredSize(new Dimension(200, 100));
-		this.add(patientQueue, BorderLayout.WEST);
+		mainPanel.add(patientQueue, BorderLayout.WEST);
 
 		JPanel southwest = new JPanel();
-		southwest.setLayout(new BorderLayout());
+		southwest.setLayout(new BorderLayout(padding, 0));
+		// southwest.setBorder(mt);
 
 		settings = new JButton("Settings");
 		this.addComponent(settings, "settings");
@@ -44,8 +56,11 @@ public class MainUI extends FrameUI {
 		logout.setPreferredSize(new Dimension(400, 300));
 		this.addComponent(logout, "logout");
 		southwest.add(logout, BorderLayout.WEST);
-		this.add(southwest, BorderLayout.SOUTH);
+		mainPanel.add(southwest, BorderLayout.SOUTH);
+		this.add(mainPanel, BorderLayout.CENTER);
+
 		this.pack();
+
 	}
 
 	/**
