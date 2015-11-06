@@ -99,7 +99,6 @@ public final class ChangePasswordDialog extends JDialog implements
 		this.cpt = this.passwordFieldConfirmNew.getPassword();
 		// confirm that these match
 		if (!new String(npt).equals(new String(cpt))) {
-			System.out.println("They dont match!!!");
 			this.passwordFieldNew.setBackground(red);
 			this.passwordFieldConfirmNew.setBackground(red);
 			return false;
