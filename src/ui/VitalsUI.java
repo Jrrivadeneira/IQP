@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -33,11 +34,21 @@ public class VitalsUI extends FrameUI {
 	}
 
 	public void buildUI() {
-		this.Back = new JButton("Back");
+		JPanel south = new JPanel();
+		south.setLayout(new BorderLayout(5,5));
+		
+		
+		
+		this.Back = new JButton("Done");
 		this.Back.setName("back");
 		this.Back.addActionListener(ctrl);
-		this.add(Back, BorderLayout.WEST);
-
+		this.Back.setPreferredSize(new Dimension(600,75));
+		south.add(this.Back, BorderLayout.EAST);
+		this.add(south,BorderLayout.SOUTH);
+		
+//		this.add(Back, BorderLayout.SOUTH);
+		
+		
 		JPanel labelsContainer = new JPanel();
 		labelsContainer.setLayout(null);
 

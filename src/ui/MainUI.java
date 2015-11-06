@@ -44,19 +44,24 @@ public class MainUI extends FrameUI {
 		mainPanel.add(newPatient, BorderLayout.CENTER);
 
 		this.patientQueue = new JButton("Patient Queue");
+		// this.patientQueue.setText("Patient \nQueue");
+//		this.patientQueue.setLayout(new BorderLayout(3, 3));
+//		this.patientQueue.add(new JLabel("Patient"), BorderLayout.NORTH);
+//		this.patientQueue.add(new JLabel("Queue"), BorderLayout.SOUTH);
+
 		this.patientQueue.setFont(core.Configuration.buttonFont);
 		this.addComponent(patientQueue, "patient queue");
-		this.patientQueue.setPreferredSize(new Dimension(200, 600));
+		this.patientQueue.setPreferredSize(new Dimension(500, 600));
 		southwest.add(patientQueue, BorderLayout.NORTH);
 
 		this.settings = new JButton("Settings");
 		this.addComponent(settings, "settings");
-		this.settings.setPreferredSize(new Dimension(200, 200));
+		this.settings.setPreferredSize(new Dimension(500, 200));
 		this.settings.setFont(core.Configuration.buttonFont);
 		southwest.add(settings, BorderLayout.SOUTH);
 
 		this.logout = new JButton("Logout");
-		this.logout.setPreferredSize(new Dimension(400, 300));
+		this.logout.setPreferredSize(new Dimension(500, 300));
 		this.addComponent(logout, "logout");
 		this.logout.setFont(core.Configuration.buttonFont);
 		southwest.add(logout, BorderLayout.CENTER);
