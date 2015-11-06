@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import ui.SettingsUI;
 import ui.UI;
 import ui.VitalsUI;
 
@@ -43,10 +44,10 @@ public class MainUIController implements Controller {
 		say("Creating vitals controller...");
 		VitalsUIController vuic = new VitalsUIController(this);
 		say("Done.");
-		say("Creating VitalsUI");
+		say("Creating VitalsUI...");
 		new VitalsUI(vuic);
 		say("Hiding MainUI");
-		hideMainUI();
+		this.hideMainUI();
 	}
 
 	private void hideMainUI() {
@@ -63,14 +64,28 @@ public class MainUIController implements Controller {
 		say("Done.");
 	}
 
+	private void showSettingsWindow() {
+		say("Creating Settings Controller");
+		SettingsUIController suc = new SettingsUIController(this);
+		say("Done.");
+		say("Creating SettingsUI...");
+		new SettingsUI(suc);
+		say("Done.");
+		say("Hiding MainUI");
+		this.hideMainUI();
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		String s = ((JComponent) e.getSource()).getName();
 		say(s);
 		if (s.equals("logout")) {
-			logout();
+			this.logout();
 		}
 		if (s.equals("new patient")) {
-			showVitalsWindow();
+			this.showVitalsWindow();
+		}
+		if (s.equals("settings")) {
+			this.showSettingsWindow();
 		}
 	}
 
@@ -106,7 +121,7 @@ public class MainUIController implements Controller {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
