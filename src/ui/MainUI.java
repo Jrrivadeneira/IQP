@@ -26,7 +26,7 @@ public class MainUI extends FrameUI {
 	}
 
 	public void buildUI() {
-		int padding = 30;
+		int padding = 10;
 		mt = BorderFactory
 				.createEmptyBorder(padding, padding, padding, padding);
 		JPanel mainPanel = new JPanel();
@@ -35,26 +35,33 @@ public class MainUI extends FrameUI {
 		this.setLayout(new BorderLayout(padding, 0));
 
 		newPatient = new JButton("New Patient");
+		this.newPatient.setFont(core.Configuration.buttonFont);
 		this.addComponent(newPatient, "new patient");
 		mainPanel.add(newPatient, BorderLayout.CENTER);
 
-		patientQueue = new JButton("Patient Queue");
-		this.addComponent(patientQueue, "patient queue");
-		patientQueue.setPreferredSize(new Dimension(200, 100));
-		mainPanel.add(patientQueue, BorderLayout.WEST);
-
+		
 		JPanel southwest = new JPanel();
-		southwest.setLayout(new BorderLayout(padding, 0));
+		southwest.setLayout(new BorderLayout(padding, padding));
 
+		this.patientQueue = new JButton("Patient Queue");
+		this.patientQueue.setFont(core.Configuration.buttonFont);
+		this.addComponent(patientQueue, "patient queue");
+		this.patientQueue.setPreferredSize(new Dimension(200, 600));
+		southwest.add(patientQueue, BorderLayout.NORTH);
+
+		
 		settings = new JButton("Settings");
 		this.addComponent(settings, "settings");
-		southwest.add(settings, BorderLayout.CENTER);
+		this.settings.setPreferredSize(new Dimension(200,200));
+		this.settings.setFont(core.Configuration.buttonFont);
+		southwest.add(settings, BorderLayout.SOUTH);
 
 		logout = new JButton("Logout");
 		logout.setPreferredSize(new Dimension(400, 300));
 		this.addComponent(logout, "logout");
-		southwest.add(logout, BorderLayout.WEST);
-		mainPanel.add(southwest, BorderLayout.SOUTH);
+		this.logout.setFont(core.Configuration.buttonFont);
+		southwest.add(logout, BorderLayout.CENTER);
+		mainPanel.add(southwest, BorderLayout.WEST);
 		this.add(mainPanel, BorderLayout.CENTER);
 
 		this.pack();
