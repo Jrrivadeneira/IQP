@@ -145,7 +145,7 @@ public class Windtalker implements Model {
 
 		for (Hospital h : wt.getHospitals())
 			wt.say(h.toString());
-		EMT e = wt.getEMT("JJack", "Databean");
+		EMT e = wt.getEMT("Jack", "Databean");
 		System.out.println(e.validate("Databean"));
 		for (EMT emt : wt.getEMTs()) {
 			wt.say(emt.toString());
@@ -264,10 +264,10 @@ public class Windtalker implements Model {
 				passwordString = rs.getBytes(1);
 			System.out.println(new String(passwordString).length());
 			mt = EMT.generateEMT(0, 0, null, null, passwordString, null);
-			say("Validated.");
+			say("Done.");
 			return mt.validate(password);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		say("Failed to validate login.");
 		return false;

@@ -5,7 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
+import core.Major;
 import ui.LoginUI;
 import ui.MainUI;
 import ui.UI;
@@ -24,8 +27,8 @@ public class LoginUIController implements Controller {
 
 	}
 
-	private boolean verify(Object o) {
-		return true;
+	private boolean verify(String username, char[] password) {
+		return Major.wt.validateLogin(username, new String(password));
 	}
 
 	public void addUI(UI u) {
@@ -74,7 +77,8 @@ public class LoginUIController implements Controller {
 		}
 		if ("signin password".contains(s)) {
 			say("validating login...");
-			if (this.verify(null)) {
+			if (this.verify(((JTextField) this.login
+					.getComponentByName("username")).getText(),(((JPasswordField)this.login.getComponentByName("password")).getPassword()))) {
 				say("verified.");
 				login.dispose();
 				MainUIController mc = new MainUIController();
@@ -92,7 +96,8 @@ public class LoginUIController implements Controller {
 	 */
 	public void say(String s) {
 		if (core.Major.verboseOutputEnabled)
-			System.out.println(this.getClass().getName().split("\\.")[1] + ": " + s);
+			System.out.println(this.getClass().getName().split("\\.")[1] + ": "
+					+ s);
 	}
 
 	/**

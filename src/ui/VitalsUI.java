@@ -14,14 +14,16 @@ public class VitalsUI extends FrameUI {
 	 * Written by Jack Rivadeneira
 	 */
 	private static final long serialVersionUID = 6216662618306237505L;
-	private JButton Back;
+	private JButton Back, addHospital;
 	private JLabel HeartRate;
 	private JLabel SPO2;
 	private JLabel BloodPressure;
 
 	/**
 	 * Constructor for the frame.
-	 * @param c - controller for the frame
+	 * 
+	 * @param c
+	 *            - controller for the frame
 	 */
 	public VitalsUI(Controller c) {
 		super(c);
@@ -35,20 +37,24 @@ public class VitalsUI extends FrameUI {
 
 	public void buildUI() {
 		JPanel south = new JPanel();
-		south.setLayout(new BorderLayout(5,5));
-		
-		
-		
+		south.setLayout(new BorderLayout(5, 5));
+
 		this.Back = new JButton("Done");
 		this.Back.setName("back");
 		this.Back.addActionListener(ctrl);
-		this.Back.setPreferredSize(new Dimension(600,75));
+		this.Back.setPreferredSize(new Dimension(600, 75));
 		south.add(this.Back, BorderLayout.EAST);
-		this.add(south,BorderLayout.SOUTH);
-		
-//		this.add(Back, BorderLayout.SOUTH);
 		
 		
+		this.addHospital = new JButton("Hospital");
+		this.addHospital.setName("add hospital");
+		this.addHospital.addActionListener(this.ctrl);
+		south.add(this.addHospital, BorderLayout.CENTER);
+
+		this.add(south, BorderLayout.SOUTH);
+
+		// this.add(Back, BorderLayout.SOUTH);
+
 		JPanel labelsContainer = new JPanel();
 		labelsContainer.setLayout(null);
 

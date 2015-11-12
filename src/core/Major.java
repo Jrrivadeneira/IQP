@@ -1,5 +1,7 @@
 package core;
 
+import model.EMT;
+import model.Windtalker;
 import control.LoginUIController;
 import control.MainUIController;
 import ui.LoginUI;
@@ -7,10 +9,18 @@ import ui.MainUI;
 
 public class Major {
 	public static boolean verboseOutputEnabled = true;
+	public static Windtalker wt;
 
 	public static void main(String[] args) {
 		System.out.println("Start!");
+		mockDB();
 		makeLoginUI();
+	}
+
+	public static void mockDB() {
+		wt = new Windtalker();
+		wt.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "Databean",
+				"Me@example.com"));
 	}
 
 	public static void makeLoginUI() {
