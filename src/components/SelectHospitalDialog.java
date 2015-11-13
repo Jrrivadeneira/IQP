@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 //import javax.swing.JPanel;
 import core.Major;
 
-class SelectHospitalsDialog extends JDialog {
+class SelectHospitalDialog extends JDialog {
 	/**
 	 * Written by Jack Rivadeneira
 	 */
@@ -16,7 +16,7 @@ class SelectHospitalsDialog extends JDialog {
 	private JaxList listOfHospitals;
 	private JButton buttonCancel;
 
-	public SelectHospitalsDialog() {
+	public SelectHospitalDialog() {
 		this.buildUI();
 	}
 
@@ -25,5 +25,6 @@ class SelectHospitalsDialog extends JDialog {
 		this.listOfHospitals = new JaxList();
 		Major.databaseManager.update(this.listOfHospitals);
 		this.add(this.listOfHospitals, BorderLayout.CENTER);
+
 	}
 }

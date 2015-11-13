@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 
 import components.ChangePasswordDialog;
-
+import components.JaxList;
 import ui.UI;
 //import ui.SettingsUI;
 
@@ -109,6 +109,12 @@ public class SettingsUIController implements Controller {
 
 	public void dispose() {
 		this.pctrl.showMainUI();
+	}
+
+	@Override
+	public void update(JaxList listOfPatients) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import components.JaxList;
+
 import ui.SettingsUI;
 import ui.UI;
 import ui.VitalsUI;
@@ -122,6 +124,12 @@ public class MainUIController implements Controller {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void update(JaxList listOfPatients) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -19,6 +19,7 @@ public class JaxList extends JPanel {
 	public static void main(String[] args) {
 		System.out.println("Program Start!");
 		JaxList jl = new JaxList();
+		jl.setListFont(new Font("Helvetica", Font.BOLD, 122));
 		JFrame jf = new JFrame();
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jf.setSize(500, 500);
@@ -55,7 +56,7 @@ public class JaxList extends JPanel {
 		validate();
 	}
 
-	public void setFont(Font f) {
+	public void setListFont(Font f) {
 		this.list.setFont(f);
 	}
 

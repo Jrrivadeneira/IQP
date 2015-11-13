@@ -8,6 +8,8 @@ import javax.swing.JComponent;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import components.JaxList;
+
 import core.Major;
 import ui.LoginUI;
 import ui.MainUI;
@@ -28,7 +30,8 @@ public class LoginUIController implements Controller {
 	}
 
 	private boolean verify(String username, char[] password) {
-		return Major.databaseManager.validateLogin(username, new String(password));
+		return Major.databaseManager.validateLogin(username, new String(
+				password));
 	}
 
 	public void addUI(UI u) {
@@ -78,11 +81,15 @@ public class LoginUIController implements Controller {
 		if ("signin password".contains(s)) {
 			say("validating login...");
 			if (this.verify(((JTextField) this.login
-					.getComponentByName("username")).getText(),(((JPasswordField)this.login.getComponentByName("password")).getPassword()))) {
+					.getComponentByName("username")).getText(),
+					(((JPasswordField) this.login
+							.getComponentByName("password")).getPassword()))) {
 				say("verified.");
 				login.dispose();
 				MainUIController mc = new MainUIController();
 				new MainUI(mc);
+			} else {
+				say("Could not verify username password combination.");
 			}
 		}
 	}
@@ -105,6 +112,12 @@ public class LoginUIController implements Controller {
 	 */
 	public void dispose() {
 		login.dispose();
+	}
+
+	@Override
+	public void update(JaxList listOfPatients) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -6,8 +6,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class EMT {
 	/**
-	 * EMT class used to store data about the users. 
-	 * Written by Jack Rivadeneira.
+	 * EMT class used to store data about the users. Written by Jack
+	 * Rivadeneira.
 	 */
 	private int id;
 	private int EMSUnitID;
@@ -126,7 +126,7 @@ public class EMT {
 			return data.substring(64).equals(this.validationString);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			// ex.printStackTrace();
 		}
 		return false;
 	}

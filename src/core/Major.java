@@ -1,6 +1,5 @@
 package core;
 
-import model.EMT;
 import model.Windtalker;
 import control.LoginUIController;
 import control.MainUIController;

@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
+import components.JaxList;
+
 import ui.UI;
 
 public class VitalsUIController implements Controller {
@@ -83,6 +85,12 @@ public class VitalsUIController implements Controller {
 	@Override
 	public void dispose() {
 		muic.showMainUI();
+	}
+
+	@Override
+	public void update(JaxList listOfPatients) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
