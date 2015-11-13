@@ -3,6 +3,8 @@ package model;
 import java.sql.*;
 import java.util.ArrayList;
 
+import components.JaxList;
+
 /**
  * This is our database interaction object used to store and retrieve data from
  * the database. To accomplish this it uses an external library called
@@ -127,6 +129,18 @@ public class Windtalker implements Model {
 		executeStatements(statements);
 	}
 
+	public void mockDB() {
+		this.wipeout();
+		this.createTables();
+		this.addHospital(new Hospital(1, "Colombia Presbyterian"));
+		this.addHospital(new Hospital(2, "Bellevue"));
+		this.addHospital(new Hospital(3, "Hospital for Special Surgery"));
+		this.addHospital(new Hospital(4, "Mount Sinai"));
+		this.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "Databean",
+				"Me@example.com"));
+
+	}
+
 	/**
 	 * Main function for database testing. To be deleted.
 	 * 
@@ -134,15 +148,7 @@ public class Windtalker implements Model {
 	 */
 	public static void main(String[] args) {
 		Windtalker wt = new Windtalker();
-		wt.wipeout();
-		wt.createTables();
-		wt.addHospital(new Hospital(1, "Colombia Presbyterian"));
-		wt.addHospital(new Hospital(2, "Bellevue"));
-		wt.addHospital(new Hospital(3, "Hospital for Special Surgery"));
-		wt.addHospital(new Hospital(4, "Mount Sinai"));
-		wt.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "JJack", "Databean",
-				"Me@example.com"));
-
+		wt.mockDB();
 		for (Hospital h : wt.getHospitals())
 			wt.say(h.toString());
 		EMT e = wt.getEMT("Jack", "Databean");
@@ -267,7 +273,7 @@ public class Windtalker implements Model {
 			say("Done.");
 			return mt.validate(password);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		say("Failed to validate login.");
 		return false;
@@ -316,5 +322,12 @@ public class Windtalker implements Model {
 	 */
 	public void addVitals(Vitals v) {
 		executeStatement(v.getInsertStatement());
+	}
+
+	public void update(JaxList listOfHospitals) {
+		ArrayList<Hospital> hospitals = this.getHospitals();
+		for (Hospital h : hospitals) {
+			listOfHospitals.addToList(h.toString());
+		}
 	}
 }

@@ -28,7 +28,7 @@ public class LoginUIController implements Controller {
 	}
 
 	private boolean verify(String username, char[] password) {
-		return Major.wt.validateLogin(username, new String(password));
+		return Major.databaseManager.validateLogin(username, new String(password));
 	}
 
 	public void addUI(UI u) {
