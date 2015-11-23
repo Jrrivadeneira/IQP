@@ -77,6 +77,13 @@ public class MainUIController implements Controller {
 		this.hideMainUI();
 	}
 
+	public void showPatientQueue() {
+
+		PatientQueueUIController c = new PatientQueueUIController(this);
+		new ui.PatientQueueUI(c);
+		this.hideMainUI();
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		String s = ((JComponent) e.getSource()).getName();
 		say(s);
@@ -88,6 +95,9 @@ public class MainUIController implements Controller {
 		}
 		if (s.equals("settings")) {
 			this.showSettingsWindow();
+		}
+		if (s.equals("patient queue")) {
+			this.showPatientQueue();
 		}
 	}
 
@@ -129,7 +139,7 @@ public class MainUIController implements Controller {
 	@Override
 	public void update(JaxList listOfPatients) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

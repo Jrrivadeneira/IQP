@@ -8,8 +8,6 @@ import javax.swing.JButton;
 import components.JaxList;
 
 import control.Controller;
-import control.PatientQueueUIController;
-import core.Major;
 
 public class PatientQueueUI extends FrameUI {
 
@@ -34,12 +32,6 @@ public class PatientQueueUI extends FrameUI {
 		this.buttonBack.addActionListener(this.ctrl);
 		this.buttonBack.setPreferredSize(new Dimension(300, 100));
 		this.add(this.buttonBack, BorderLayout.SOUTH);
-	}
-
-	public static void main(String[] args) {
-		System.out.println("PATIENT QUEUE TEST AREA!!!");
-		PatientQueueUI pq = new PatientQueueUI(new PatientQueueUIController());
-		pq.ctrl.addUI(pq);
 	}
 
 }

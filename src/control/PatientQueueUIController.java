@@ -11,9 +11,10 @@ import ui.UI;
 public class PatientQueueUIController implements Controller {
 
 	UI pqui;
+	MainUIController mainUIController;
 
-	public PatientQueueUIController() {
-
+	public PatientQueueUIController(MainUIController muc) {
+		this.mainUIController = muc;
 	}
 
 	public PatientQueueUIController(UI ui) {
@@ -65,7 +66,7 @@ public class PatientQueueUIController implements Controller {
 	}
 
 	public void dispose() {
-
+		this.mainUIController.showMainUI();
 	}
 
 	public void update(JaxList listOfPatients) {
