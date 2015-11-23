@@ -4,8 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import components.JaxList;
+import javax.swing.JComponent;
 
+import components.JaxList;
 import ui.UI;
 
 public class PatientQueueUIController implements Controller {
@@ -54,11 +55,15 @@ public class PatientQueueUIController implements Controller {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
+		String name = ((JComponent) e.getSource()).getName();
+		say(name);
+		if(name.equals("back")){
+			this.dispose();
+		}
 	}
 
 	public void say(String s) {
-
+		System.out.println("PatientQueueUIController: " + s);
 	}
 
 	public void addUI(UI u) {
@@ -66,6 +71,7 @@ public class PatientQueueUIController implements Controller {
 	}
 
 	public void dispose() {
+		this.pqui.dispose();
 		this.mainUIController.showMainUI();
 	}
 

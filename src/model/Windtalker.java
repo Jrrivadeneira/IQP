@@ -136,7 +136,7 @@ public class Windtalker implements Model {
 		this.addHospital(new Hospital(2, "Bellevue"));
 		this.addHospital(new Hospital(3, "Hospital for Special Surgery"));
 		this.addHospital(new Hospital(4, "Mount Sinai"));
-		this.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "Databean",
+		this.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "password",
 				"Me@example.com"));
 
 	}

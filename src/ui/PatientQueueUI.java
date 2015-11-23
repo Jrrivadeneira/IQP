@@ -29,6 +29,7 @@ public class PatientQueueUI extends FrameUI {
 		this.ctrl.update(this.listOfPatients);
 		this.add(this.listOfPatients, BorderLayout.CENTER);
 		this.buttonBack = new JButton("Back");
+		this.buttonBack.setName("back");
 		this.buttonBack.addActionListener(this.ctrl);
 		this.buttonBack.setPreferredSize(new Dimension(300, 100));
 		this.add(this.buttonBack, BorderLayout.SOUTH);
