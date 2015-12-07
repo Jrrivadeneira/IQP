@@ -1,15 +1,16 @@
 package control;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import components.JaxList;
-
 import core.Major;
 import ui.LoginUI;
 import ui.MainUI;
@@ -30,8 +31,7 @@ public class LoginUIController implements Controller {
 	}
 
 	private boolean verify(String username, char[] password) {
-		return Major.databaseManager.validateLogin(username, new String(
-				password));
+		return Major.databaseManager.getEMT(username, new String(password)) != null;
 	}
 
 	public void addUI(UI u) {
@@ -90,6 +90,9 @@ public class LoginUIController implements Controller {
 				new MainUI(mc);
 			} else {
 				say("Could not verify username password combination.");
+				JOptionPane.showMessageDialog((Component) login,
+						"Could not validate username password combination.",
+						"Login Failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -117,7 +120,7 @@ public class LoginUIController implements Controller {
 	@Override
 	public void update(JaxList listOfPatients) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -1,9 +1,11 @@
 package components;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+
 
 //import javax.swing.JPanel;
 import core.Major;
@@ -21,7 +23,8 @@ class SelectHospitalDialog extends JDialog {
 	}
 
 	public void buildUI() {
-		this.setLayout(new BorderLayout());
+
+		this.setLayout(new GridLayout(5,4));
 		this.listOfHospitals = new JaxList();
 		Major.databaseManager.update(this.listOfHospitals);
 		this.add(this.listOfHospitals, BorderLayout.CENTER);

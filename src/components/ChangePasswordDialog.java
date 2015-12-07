@@ -105,6 +105,8 @@ public final class ChangePasswordDialog extends JDialog implements
 		}
 		this.submitted = true;
 		this.dispose();
+
+		core.Major.databaseManager.changePassword(this.getResults());
 		return true;
 	}
 

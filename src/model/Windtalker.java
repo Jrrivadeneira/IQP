@@ -23,6 +23,10 @@ public class Windtalker implements Model {
 	private ResultSet rs;
 	private EMT user;
 
+	public void setUser(EMT e) {
+
+	}
+
 	/**
 	 * Constructor for the windtalker object.
 	 */
@@ -123,9 +127,9 @@ public class Windtalker implements Model {
 	public void createTables() {
 		String statements[] = {
 				"CREATE TABLE Patients (PATIENT_ID INT, EMT_ID INT, Region INT, Notes VARCHAR(255))",
-				"CREATE TABLE Hospitals (HOSPITAL_ID INT, HOSPITAL_NAME VARCHAR(255))",
+				"CREATE TABLE Hospitals (HOSPITAL_ID INT, HOSPITAL_NAME VARCHAR(255), HOSPITAL_ADDRESS VARCHAR(255), HOSPITAL_PHONE VARCHAR(255))",
 				"CREATE TABLE EMS (EMS_ID INT)",
-				"CREATE TABLE EMT (EMT_ID INT, EMS_ID INT, EMT_NAME VARCHAR(255), EMT_USERNAME VARCHAR(255), EMT_PASSWORD VARBINARY(500))",
+				"CREATE TABLE EMT (EMT_ID INT, EMS_ID INT, EMT_NAME VARCHAR(255), EMT_USERNAME VARCHAR(255), EMT_PASSWORD VARBINARY(500), EMT_EMAIL VARCHAR(255))",
 				"CREATE TABLE Vitals (VITALS_ID INT, PATIENT_ID INT, SPO2 INT, Heartrate INT, Systolic INT, Diastolic INT)" };
 		executeStatements(statements);
 	}
@@ -133,10 +137,10 @@ public class Windtalker implements Model {
 	public void mockDB() {
 		this.wipeout();
 		this.createTables();
-		this.addHospital(new Hospital(1, "Colombia Presbyterian"));
-		this.addHospital(new Hospital(2, "Bellevue"));
-		this.addHospital(new Hospital(3, "Hospital for Special Surgery"));
-		this.addHospital(new Hospital(4, "Mount Sinai"));
+		this.addHospital(new Hospital(0, "Colombia Presbyterian"));
+		this.addNewHospital(new Hospital(0, "Bellevue"));
+		this.addNewHospital(new Hospital(0, "Hospital for Special Surgery"));
+		this.addNewHospital(new Hospital(0, "Mount Sinai"));
 		this.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "password",
 				"Me@example.com"));
 
@@ -152,8 +156,8 @@ public class Windtalker implements Model {
 		wt.mockDB();
 		for (Hospital h : wt.getHospitals())
 			wt.say(h.toString());
-		EMT e = wt.getEMT("Jack", "Databean");
-		System.out.println(e.validate("Databean"));
+		EMT e = wt.getEMT("Jack", "password");
+		System.out.println(e.validate("password"));
 		for (EMT emt : wt.getEMTs()) {
 			wt.say(emt.toString());
 		}
@@ -175,13 +179,24 @@ public class Windtalker implements Model {
 
 	}
 
+	public void addNewHospital(Hospital h) {
+
+		ArrayList<Hospital> l = getHospitals();
+		if (l.size() == 0) {
+			this.addHospital(h);
+		}
+		Hospital lastHospital = l.get(l.size() - 1);
+		this.addHospital(new Hospital(lastHospital.getID() + 1, h));
+
+	}
+
 	/**
 	 * Adds the given hospital to the database in the hospitals table.
 	 * 
 	 * @param h
 	 *            the hospital to be added to the database.
 	 */
-	public void addHospital(Hospital h) {
+	private void addHospital(Hospital h) {
 		executeStatement("INSERT INTO Hospitals (HOSPITAL_ID, HOSPITAL_NAME) VALUES ("
 				+ h.toString() + ");");
 	}
@@ -272,7 +287,9 @@ public class Windtalker implements Model {
 			System.out.println(new String(passwordString).length());
 			mt = EMT.generateEMT(0, 0, null, null, passwordString, null);
 			say("Done.");
-			return mt.validate(password);
+			if (mt.validate(password)) {
+				return true;
+			}
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}
@@ -290,6 +307,7 @@ public class Windtalker implements Model {
 	 * @return
 	 */
 	public EMT getEMT(String username, String password) {
+		say("Getting user");
 		if (!validateLogin(username, password)) {
 			say("Could not validate username password combination.");
 			return null;
@@ -335,23 +353,24 @@ public class Windtalker implements Model {
 
 	private void removeEMT(String username, String password) {
 		if (this.validateLogin(username, password)) {
-			this.executeStatement("DROP * FROM EMT WHERE USERNAME='" + username
+			this.executeStatement("DELETE FROM EMT WHERE EMT_USERNAME='" + username
 					+ "'");
 		}
 	}
 
 	public void changePassword(char[][] results) {
-		if (validateLogin(this.user.getName(), new String(results[0]))) {
+		say("Changing Password...");
+		this.getEMT(this.user.getUsername(), new String(results[0]));
+		// set user to a new EMT with the same everything as the
+		// currently signed in EMT except password.
+		// remove currently signed in EMT
+		this.removeEMT(this.user.getUsername(), new String(results[0]));
+		this.user = new EMT(this.user.getID(), this.user.getEMSUnitID(),
+				this.user.getName(), this.user.getUsername(), new String(
+						results[1]), this.user.getEmail());
+		// place the new emt
+		this.addEMT(this.user);
 
-			// set user to a new EMT with the same everything as the
-			// currently signed in EMT except password.
-			this.removeEMT(this.user.getUsername(), new String(results[0]));
-			this.user = new EMT(this.user.getID(), this.user.getEMSUnitID(),
-					this.user.getName(), this.user.getUsername(), new String(
-							results[1]), this.user.getEmail());
-			this.addEMT(this.user);
-			// remove currently signed in EMT
-			// place the new emt
-		}
+		this.say("Done.");
 	}
 }

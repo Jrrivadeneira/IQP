@@ -1,6 +1,6 @@
 package ui;
 
-import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
 import javax.swing.*;
 
@@ -13,6 +13,7 @@ public class SettingsUI extends FrameUI {
 	 */
 	private static final long serialVersionUID = -6221117603324451662L;
 	JButton changePassword, uiTweaks, addHospital, back;
+	
 
 	public SettingsUI(Controller c) {
 		super(c);
@@ -25,20 +26,32 @@ public class SettingsUI extends FrameUI {
 
 	public void buildUI() {
 		this.setTitle("SettingsUI");
-		this.changePassword = new JButton("change password");
+		GridLayout layout = new GridLayout(2,4);
+		
+		layout.setHgap(core.Configuration.uiSpacing);
+		layout.setVgap(core.Configuration.uiSpacing);
+		
+		this.setLayout(layout);
+		
+		this.changePassword = new JButton("Change Password");
 		this.changePassword.setName("change password");
 		this.changePassword.addActionListener(this.ctrl);
-		this.add(this.changePassword, BorderLayout.SOUTH);
-		this.uiTweaks = new JButton("ui tweaks");
-		this.addHospital = new JButton("add hospital");
+		this.add(this.changePassword);
+		
+		this.uiTweaks = new JButton("UI Tweaks");
+		this.uiTweaks.setName("ui tweaks");
+		this.uiTweaks.addActionListener(this.ctrl);
+		this.add(this.uiTweaks);
+		
+		this.addHospital = new JButton("Add Hospital");
+		this.addHospital.setName("add hospital");
+		this.addHospital.addActionListener(this.ctrl);
+		this.add(this.addHospital);
+		
 		this.back = new JButton("Back");
 		this.back.setName("back");
 		this.back.addActionListener(this.ctrl);
-		this.add(back, BorderLayout.WEST);
-	}
-
-	public void showChangePasswordDialog() {
-
+		this.add(back);
 	}
 
 }
