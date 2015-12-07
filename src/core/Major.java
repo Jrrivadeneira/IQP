@@ -9,12 +9,10 @@ import ui.MainUI;
 public class Major {
 	public static boolean verboseOutputEnabled = true;
 	public static Windtalker databaseManager;
-
 	public static void main(String[] args) {
 		System.out.println("Start!");
 		mockDB();
 		makeLoginUI();
-
 	}
 
 	public static void mockDB() {

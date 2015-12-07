@@ -8,13 +8,16 @@ import javax.swing.JComponent;
 
 import components.ChangePasswordDialog;
 import components.JaxList;
+import core.Major;
 import ui.UI;
+
 //import ui.SettingsUI;
 
 public class SettingsUIController implements Controller {
 
 	private MainUIController pctrl;
 	private UI sui;
+
 	public SettingsUIController(MainUIController muic) {
 		this.pctrl = muic;
 
@@ -67,17 +70,16 @@ public class SettingsUIController implements Controller {
 		// TODO Auto-generated method stub
 
 	}
-	
-	private void back(){
+
+	private void back() {
 		sui.dispose();
 	}
-	
-	private void changePassword(){
-//		String oldPass = new String();
-//		String newPass = new String();
-//		String newPassConfirm = new String();
-		new ChangePasswordDialog();
-//		SettingsUI u = (SettingsUI)sui;
+
+	private void changePassword() {
+		ChangePasswordDialog CPD = new ChangePasswordDialog();
+		if (CPD.didClickSubmit())
+			Major.databaseManager.changePassword(CPD.getResults());
+		// SettingsUI u = (SettingsUI)sui;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -104,7 +106,6 @@ public class SettingsUIController implements Controller {
 
 	public void addUI(UI u) {
 		sui = u;
-
 	}
 
 	public void dispose() {
@@ -114,7 +115,7 @@ public class SettingsUIController implements Controller {
 	@Override
 	public void update(JaxList listOfPatients) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

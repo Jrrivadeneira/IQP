@@ -113,7 +113,7 @@ public final class ChangePasswordDialog extends JDialog implements
 			this.dispose();
 		}
 		if (e.getSource() == this.buttonSubmit) {
-			submit();
+			this.submitted = submit();
 		}
 		if (e.getSource() == this.oldPass) {
 			this.passwordFieldNew.requestFocus();

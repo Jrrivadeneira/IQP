@@ -21,6 +21,7 @@ public class Windtalker implements Model {
 	private Statement st;
 	private boolean verbose = true;
 	private ResultSet rs;
+	private EMT user;
 
 	/**
 	 * Constructor for the windtalker object.
@@ -290,7 +291,7 @@ public class Windtalker implements Model {
 	 */
 	public EMT getEMT(String username, String password) {
 		if (!validateLogin(username, password)) {
-			say("Could not validate username password combination");
+			say("Could not validate username password combination.");
 			return null;
 		}
 		EMT mt = null;
@@ -303,8 +304,8 @@ public class Windtalker implements Model {
 				String Name = rs.getString(3); // name
 				String Username = rs.getString(4); // username
 				byte[] Password = rs.getBytes(5); // password
-				// Email=rs.getString(6); // Email
-				String Email = null;
+				String Email = rs.getString(6); // Email
+				// String Email = null;
 				mt = EMT.generateEMT(ID, EMSUNITID, Name, Username, Password,
 						Email);
 				System.out.println(rs.getBytes(5).length);
@@ -314,6 +315,7 @@ public class Windtalker implements Model {
 			System.out.println("Failed!");
 			e.printStackTrace();
 		}
+		this.user = mt;
 		return mt;
 	}
 
@@ -328,6 +330,28 @@ public class Windtalker implements Model {
 		ArrayList<Hospital> hospitals = this.getHospitals();
 		for (Hospital h : hospitals) {
 			listOfHospitals.addToList(h.toString());
+		}
+	}
+
+	private void removeEMT(String username, String password) {
+		if (this.validateLogin(username, password)) {
+			this.executeStatement("DROP * FROM EMT WHERE USERNAME='" + username
+					+ "'");
+		}
+	}
+
+	public void changePassword(char[][] results) {
+		if (validateLogin(this.user.getName(), new String(results[0]))) {
+
+			// set user to a new EMT with the same everything as the
+			// currently signed in EMT except password.
+			this.removeEMT(this.user.getUsername(), new String(results[0]));
+			this.user = new EMT(this.user.getID(), this.user.getEMSUnitID(),
+					this.user.getName(), this.user.getUsername(), new String(
+							results[1]), this.user.getEmail());
+			this.addEMT(this.user);
+			// remove currently signed in EMT
+			// place the new emt
 		}
 	}
 }
