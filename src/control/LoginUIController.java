@@ -76,7 +76,16 @@ public class LoginUIController implements Controller {
 		if (s.equals("username")) {
 			// this.login.getComponentByName("password").requestFocus();
 			LoginUI ui = (LoginUI) this.login;
-			ui.focusPassword();
+			if (ui.isIDNumber()) {
+				if(core.Major.databaseManager.signInWithID(ui.getUsername())){
+					say("verified.");
+					login.dispose();
+					MainUIController mc = new MainUIController();
+					new MainUI(mc);
+				}
+			} else {
+				ui.focusPassword();
+			}
 		}
 		if ("signin password".contains(s)) {
 			say("validating login...");

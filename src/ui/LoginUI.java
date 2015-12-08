@@ -81,6 +81,17 @@ public class LoginUI extends FrameUI {
 		say("Done!");
 	}
 
+	/**
+	 * Returns true if the username is suspected to be an ID numbers
+	 */
+	public boolean isIDNumber() {
+		return "1234567890".contains(this.username.getText().charAt(0) + "");
+	}
+
+	public String getUsername() {
+		return this.username.getText();
+	}
+
 	public void buildUI() {
 		this.setLayout(null);
 		components = new HashMap<String, JComponent>();

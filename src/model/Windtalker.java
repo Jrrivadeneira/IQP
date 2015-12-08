@@ -129,7 +129,7 @@ public class Windtalker implements Model {
 				"CREATE TABLE Patients (PATIENT_ID INT, EMT_ID INT, Region INT, Notes VARCHAR(255))",
 				"CREATE TABLE Hospitals (HOSPITAL_ID INT, HOSPITAL_NAME VARCHAR(255), HOSPITAL_ADDRESS VARCHAR(255), HOSPITAL_PHONE VARCHAR(255))",
 				"CREATE TABLE EMS (EMS_ID INT)",
-				"CREATE TABLE EMT (EMT_ID INT, EMS_ID INT, EMT_NAME VARCHAR(255), EMT_USERNAME VARCHAR(255), EMT_PASSWORD VARBINARY(500), EMT_EMAIL VARCHAR(255))",
+				"CREATE TABLE EMT (EMT_ID VARCHAR(255), EMS_ID INT, EMT_NAME VARCHAR(255), EMT_USERNAME VARCHAR(255), EMT_PASSWORD VARBINARY(500), EMT_EMAIL VARCHAR(255))",
 				"CREATE TABLE Vitals (VITALS_ID INT, PATIENT_ID INT, SPO2 INT, Heartrate INT, Systolic INT, Diastolic INT)" };
 		executeStatements(statements);
 	}
@@ -141,8 +141,8 @@ public class Windtalker implements Model {
 		this.addNewHospital(new Hospital(0, "Bellevue"));
 		this.addNewHospital(new Hospital(0, "Hospital for Special Surgery"));
 		this.addNewHospital(new Hospital(0, "Mount Sinai"));
-		this.addEMT(new EMT(0, 0, "Jack_Rivadeneira", "Jack", "password",
-				"Me@example.com"));
+		this.addEMT(new EMT("79450210601", 0, "Jack_Rivadeneira", "Jack",
+				"password", "Me@example.com"));
 
 	}
 
@@ -227,8 +227,9 @@ public class Windtalker implements Model {
 		ArrayList<EMT> emts = new ArrayList<EMT>();
 		try {
 			while (rs.next()) {
-				emts.add(EMT.generateEMT(rs.getInt(1), rs.getInt(2),
-						rs.getString(3), rs.getString(4), rs.getBytes(5), null));
+				emts.add(EMT.generateEMT(rs.getString(1), rs.getInt(2),
+						rs.getString(3), rs.getString(4), rs.getBytes(5),
+						rs.getString(6)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -285,7 +286,7 @@ public class Windtalker implements Model {
 			while (rs.next())
 				passwordString = rs.getBytes(1);
 			System.out.println(new String(passwordString).length());
-			mt = EMT.generateEMT(0, 0, null, null, passwordString, null);
+			mt = EMT.generateEMT(null, 0, null, null, passwordString, null);
 			say("Done.");
 			if (mt.validate(password)) {
 				return true;
@@ -315,26 +316,39 @@ public class Windtalker implements Model {
 		EMT mt = null;
 		this.executeSelectStatement("SELECT * FROM EMT WHERE EMT_USERNAME="
 				+ "'" + username + "';");
-		try {
-			while (rs.next()) {
-				int ID = rs.getInt(1); // id
-				int EMSUNITID = rs.getInt(2); // emsunitid
-				String Name = rs.getString(3); // name
-				String Username = rs.getString(4); // username
-				byte[] Password = rs.getBytes(5); // password
-				String Email = rs.getString(6); // Email
-				// String Email = null;
-				mt = EMT.generateEMT(ID, EMSUNITID, Name, Username, Password,
-						Email);
-				System.out.println(rs.getBytes(5).length);
-				say("EMT Successfully generated and ready for validation.");
-			}
-		} catch (SQLException e) {
-			System.out.println("Failed!");
-			e.printStackTrace();
-		}
+		mt = extractEMT();
+		say("EMT Successfully generated and ready for validation.");
 		this.user = mt;
 		return mt;
+	}
+
+	/**
+	 * Extracts an EMT after a select statement was called.
+	 * 
+	 * @returns The last EMT that fits this criteria.
+	 */
+	private EMT extractEMT() {
+		try {
+			while (rs.next()) {
+				String ID = rs.getString(1);
+				int EMS_UNIT_ID = rs.getInt(2);
+				String Name = rs.getString(3);
+				String Username = rs.getString(4);
+				byte[] Password = rs.getBytes(5);
+				String Email = rs.getString(6);
+				return EMT.generateEMT(ID, EMS_UNIT_ID, Name, Username,
+						Password, Email);
+			}
+		} catch (Exception ex) {
+
+		}
+		return null;
+	}
+
+	private EMT getEMTByID(String id) {
+		executeSelectStatement("SELECT * FROM EMT WHERE EMT_ID = " + id + ";");
+
+		return extractEMT();
 	}
 
 	/**
@@ -353,24 +367,36 @@ public class Windtalker implements Model {
 
 	private void removeEMT(String username, String password) {
 		if (this.validateLogin(username, password)) {
-			this.executeStatement("DELETE FROM EMT WHERE EMT_USERNAME='" + username
-					+ "'");
+			this.executeStatement("DELETE FROM EMT WHERE EMT_USERNAME='"
+					+ username + "'");
 		}
 	}
 
+	/**
+	 * Changes the password of the currently signed in EMT
+	 * 
+	 * @param results
+	 */
 	public void changePassword(char[][] results) {
 		say("Changing Password...");
 		this.getEMT(this.user.getUsername(), new String(results[0]));
-		// set user to a new EMT with the same everything as the
-		// currently signed in EMT except password.
-		// remove currently signed in EMT
 		this.removeEMT(this.user.getUsername(), new String(results[0]));
 		this.user = new EMT(this.user.getID(), this.user.getEMSUnitID(),
 				this.user.getName(), this.user.getUsername(), new String(
 						results[1]), this.user.getEmail());
-		// place the new emt
 		this.addEMT(this.user);
 
 		this.say("Done.");
+	}
+
+	/**
+	 * signs in the user using their ID number.
+	 * @param ID
+	 * @returns true if the signin succeeded.
+	 */
+	public boolean signInWithID(String ID) {
+		say("Signing in with ID: " + ID);
+		this.user = this.getEMTByID(ID);
+		return this.user != null;
 	}
 }

@@ -9,7 +9,7 @@ public class EMT {
 	 * EMT class used to store data about the users. Written by Jack
 	 * Rivadeneira.
 	 */
-	private int id;
+	private String id;
 	private int EMSUnitID;
 	private String name;
 	private String username;
@@ -37,7 +37,7 @@ public class EMT {
 	 * @param Password
 	 * @param Email
 	 */
-	public EMT(int ID, int EMSUNITID, String Name, String Username,
+	public EMT(String ID, int EMSUNITID, String Name, String Username,
 			String Password, String Email) {
 		this.id = ID;
 		this.EMSUnitID = EMSUNITID;
@@ -64,7 +64,7 @@ public class EMT {
 	 *            - sets the Email of the EMT
 	 * @returns an EMT with the given data.
 	 */
-	protected static EMT generateEMT(int ID, int EMSUNITID, String Name,
+	protected static EMT generateEMT(String ID, int EMSUNITID, String Name,
 			String Username, byte[] Password, String Email) {
 		EMT e = new EMT();
 		e.id = ID;
@@ -152,7 +152,7 @@ public class EMT {
 	 * 
 	 * @returns the ID of this EMT
 	 */
-	public int getID() {
+	public String getID() {
 		return this.id;
 	}
 
