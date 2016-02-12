@@ -2,7 +2,6 @@ package components;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;

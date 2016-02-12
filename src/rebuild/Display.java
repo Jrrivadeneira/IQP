@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-
 import components.JaxList;
 
 public class Display extends JFrame implements ActionListener {
@@ -56,7 +55,7 @@ public class Display extends JFrame implements ActionListener {
 
 		this.runNumberScreen = new JPanel();
 		this.runNumberScreen.setLayout(new BorderLayout());
-		this.buildPinNumber();
+		this.buildRunNumberScreen();
 		this.actionScreen = new JPanel();
 		this.buildActionScreen();
 		this.current = this.startScreen;
@@ -66,6 +65,9 @@ public class Display extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 
+	/**
+	 * builds the action screen where an EMT can hit specific action buttons
+	 */
 	private void buildActionScreen() {
 		this.actionScreen.setLayout(new BorderLayout());
 		JPanel LeftSide = new JPanel();
@@ -98,7 +100,10 @@ public class Display extends JFrame implements ActionListener {
 		this.actionScreen.add(rightSide, BorderLayout.EAST);
 		this.actionScreen.add(LeftSide, BorderLayout.CENTER);
 	}
-
+	
+	/**
+	 * Invoked when the user hits the start button.
+	 */
 	private void startButton() {
 		System.out.println("HERE!");
 		this.current.setVisible(false);
@@ -114,7 +119,10 @@ public class Display extends JFrame implements ActionListener {
 		new Display();
 	}
 
-	private void buildPinNumber() {
+	/**
+	 * builds the enter run number screen where the EMT enters the run number
+	 */
+	private void buildRunNumberScreen() {
 		runNumber = "";
 		JPanel pad = new JPanel();
 		pad.setLayout(new GridLayout(4, 3));
@@ -170,7 +178,8 @@ public class Display extends JFrame implements ActionListener {
 		pad.add(this.buttonEnter);
 		this.pinField = new JTextField();
 		this.pinField.setEditable(false);
-		this.pinField.setBackground(Color.WHITE);;
+		this.pinField.setBackground(Color.WHITE);
+		;
 		this.pinField.setFont(new Font("Arial", Font.PLAIN, 54));
 		this.pinField.setText("Pin Number");
 		this.runNumberScreen.add(this.pinField, BorderLayout.NORTH);
@@ -178,6 +187,9 @@ public class Display extends JFrame implements ActionListener {
 
 	}
 
+	/**
+	 * is called when the enter button is hit on the enter run number screen
+	 */
 	private void enterButton() {
 		gen = 2;
 		System.out.println("ENTER BUTTON HIT!");
@@ -187,19 +199,24 @@ public class Display extends JFrame implements ActionListener {
 		this.add(this.current);
 
 	}
+
 	/**
 	 * Resets the variables and returns you to the home screen.
 	 */
 	private void goToHomeScreen() {
 		gen = 0;
 		actionList.clear();
-		System.out.println("Cancel button hit");
+		this.setTitle("Home");
 		this.current.setVisible(false);
 		this.current = this.startScreen;
 		this.current.setVisible(true);
 		this.add(current);
 	}
 
+	/**
+	 * Saves the data entered by an EMT on the action screen to a file named
+	 * after the run number
+	 */
 	private void saveToFile() {
 		System.out.println("Saving...");
 		try {
@@ -213,8 +230,13 @@ public class Display extends JFrame implements ActionListener {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		System.out.println("Done.");
 	}
 
+
+	/**
+	 * Is called when the user hits the end run button on the Action Screen
+	 */
 	private void endRunButton() {
 		saveToFile();
 		goToHomeScreen();
@@ -236,7 +258,7 @@ public class Display extends JFrame implements ActionListener {
 		if (o.equals(this.endRun)) {
 			endRunButton();
 		}
-		if (o.equals(this.start)){
+		if (o.equals(this.start)) {
 			startButton();
 		}
 	}
