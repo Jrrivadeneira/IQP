@@ -31,6 +31,7 @@ public class LoginUIController implements Controller {
 	}
 
 	private boolean verify(String username, char[] password) {
+		username = username.split("[' ;]")[0];
 		return Major.databaseManager.getEMT(username, new String(password)) != null;
 	}
 

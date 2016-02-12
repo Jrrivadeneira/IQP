@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
+//import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
+//import javax.swing.border.EmptyBorder;
 
 public class AddHospitalDialog extends JDialog implements ActionListener {
 	/**

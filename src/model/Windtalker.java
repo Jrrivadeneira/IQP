@@ -2,6 +2,7 @@ package model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import components.JaxList;
 
@@ -142,7 +143,7 @@ public class Windtalker implements Model {
 		this.addNewHospital(new Hospital(0, "Hospital for Special Surgery"));
 		this.addNewHospital(new Hospital(0, "Mount Sinai"));
 		this.addEMT(new EMT("79450210601", 0, "Jack_Rivadeneira", "Jack",
-				"password", "Me@example.com"));
+				"brotherhood", "Me@example.com"));
 
 	}
 
@@ -156,8 +157,8 @@ public class Windtalker implements Model {
 		wt.mockDB();
 		for (Hospital h : wt.getHospitals())
 			wt.say(h.toString());
-		EMT e = wt.getEMT("Jack", "password");
-		System.out.println(e.validate("password"));
+		EMT e = wt.getEMT("jack", "brotherhood");
+		System.out.println(e.validate("brotherhood"));
 		for (EMT emt : wt.getEMTs()) {
 			wt.say(emt.toString());
 		}
@@ -279,13 +280,14 @@ public class Windtalker implements Model {
 	public boolean validateLogin(String username, String password) {
 		say("Validating Login");
 		EMT mt = null;
-		this.executeSelectStatement("SELECT EMT_PASSWORD FROM EMT WHERE EMT_USERNAME="
-				+ "'" + username + "';");
+		String command = "SELECT EMT_PASSWORD FROM EMT WHERE EMT_USERNAME="
+				+ "'" + username + "';";
+		System.out.println("Command: " + command);
+		this.executeSelectStatement(command);
 		try {
 			byte[] passwordString = null;
 			while (rs.next())
 				passwordString = rs.getBytes(1);
-			System.out.println(new String(passwordString).length());
 			mt = EMT.generateEMT(null, 0, null, null, passwordString, null);
 			say("Done.");
 			if (mt.validate(password)) {
@@ -391,6 +393,7 @@ public class Windtalker implements Model {
 
 	/**
 	 * signs in the user using their ID number.
+	 * 
 	 * @param ID
 	 * @returns true if the signin succeeded.
 	 */

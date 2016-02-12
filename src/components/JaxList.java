@@ -103,4 +103,13 @@ public class JaxList extends JPanel {
 			i++;
 		}
 	}
+
+	public void clear() {
+		lm.removeAllElements();
+		this.refresh();
+	}
+
+	public Object[] getAll() {
+		return (Object[]) this.lm.toArray();
+	}
 }

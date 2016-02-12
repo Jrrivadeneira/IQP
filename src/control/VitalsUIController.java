@@ -82,12 +82,10 @@ public class VitalsUIController implements Controller {
 		vui = u;
 	}
 
-	@Override
 	public void dispose() {
 		muic.showMainUI();
 	}
 
-	@Override
 	public void update(JaxList listOfPatients) {
 		// TODO Auto-generated method stub
 		

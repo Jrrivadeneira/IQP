@@ -95,6 +95,7 @@ public class EMT {
 			Cipher c = Cipher.getInstance("AES");
 			c.init(Cipher.ENCRYPT_MODE, sec);
 			this.password = c.doFinal(this.password);
+			System.out.println(this.password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

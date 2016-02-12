@@ -1,0 +1,243 @@
+package rebuild;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+import components.JaxList;
+
+public class Display extends JFrame implements ActionListener {
+
+	/**
+	 * Written by Jack Rivadeneira
+	 */
+	private static final long serialVersionUID = 7070175919870901366L;
+	private JPanel startScreen, runNumberScreen, actionScreen, current;
+	private JButton start;
+	private JButton buttonOne;
+	private JButton buttonTwo;
+	private JButton buttonThree;
+	private JButton buttonFour;
+	private JButton buttonFive;
+	private JButton buttonSix;
+	private JButton buttonSeven;
+	private JButton buttonEight;
+	private JButton buttonNine;
+	private JButton buttonCancel;
+	private JButton buttonZero;
+	private JButton buttonEnter;
+	private JButton endRun;
+	private JButton[] actionButtons = { new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"),
+			new JButton("Button"), new JButton("Button"), new JButton("Button") };
+
+	private JTextField pinField;
+	private int gen = 0;
+
+	private JaxList actionList = new JaxList();
+	private String runNumber = "";
+
+	public Display() {
+		this.startScreen = new JPanel();
+		this.startScreen.setLayout(new BorderLayout());
+
+		start = new JButton("START");
+		start.addActionListener(this);
+		this.startScreen.add(start);
+
+		this.runNumberScreen = new JPanel();
+		this.runNumberScreen.setLayout(new BorderLayout());
+		this.buildPinNumber();
+		this.actionScreen = new JPanel();
+		this.buildActionScreen();
+		this.current = this.startScreen;
+
+		this.add(current);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setVisible(true);
+	}
+
+	private void buildActionScreen() {
+		this.actionScreen.setLayout(new BorderLayout());
+		JPanel LeftSide = new JPanel();
+		LeftSide.setLayout(new BorderLayout());
+		JPanel buttonPanel = new JPanel();// button panel
+		buttonPanel.setLayout(new GridLayout(4, 4));
+		for (JButton eachButton : this.actionButtons) {
+			eachButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String text = ((JButton) e.getSource()).getText() + "_"
+							+ System.currentTimeMillis();
+					actionList.addToList(text);
+				}
+			});
+			buttonPanel.add(eachButton);
+		}
+		JPanel typeArea = new JPanel();
+		typeArea.setLayout(new GridLayout(2, 5));
+		typeArea.setPreferredSize(new Dimension(500, 300));
+		LeftSide.add(buttonPanel, BorderLayout.CENTER);
+		LeftSide.add(typeArea, BorderLayout.NORTH);
+
+		JPanel rightSide = new JPanel();// this will hold a list and a button
+		rightSide.setLayout(new BorderLayout());
+		this.endRun = new JButton("End Run");
+		this.endRun.setPreferredSize(new Dimension(400, 370));
+		this.endRun.addActionListener(this);
+		rightSide.add(actionList, BorderLayout.CENTER);
+		rightSide.add(endRun, BorderLayout.SOUTH);
+		this.actionScreen.add(rightSide, BorderLayout.EAST);
+		this.actionScreen.add(LeftSide, BorderLayout.CENTER);
+	}
+
+	private void startButton() {
+		System.out.println("HERE!");
+		this.current.setVisible(false);
+		this.current = this.runNumberScreen;
+		this.current.setVisible(true);
+		this.add(current);
+		runNumber = "";
+		gen = 1;
+		this.pinField.setText("Enter Run Number");
+	}
+
+	public static void main(String[] args) {
+		new Display();
+	}
+
+	private void buildPinNumber() {
+		runNumber = "";
+		JPanel pad = new JPanel();
+		pad.setLayout(new GridLayout(4, 3));
+		this.setLayout(new BorderLayout());
+
+		this.buttonCancel = new JButton("Cancel");
+		this.buttonCancel.addActionListener(this);
+
+		this.buttonEnter = new JButton("Enter");
+		this.buttonEnter.addActionListener(this);
+
+		this.buttonZero = new JButton("0");
+		this.buttonZero.addActionListener(this);
+
+		this.buttonOne = new JButton("1");
+		this.buttonOne.addActionListener(this);
+
+		this.buttonTwo = new JButton("2");
+		this.buttonTwo.addActionListener(this);
+
+		this.buttonThree = new JButton("3");
+		this.buttonThree.addActionListener(this);
+
+		this.buttonFour = new JButton("4");
+		this.buttonFour.addActionListener(this);
+
+		this.buttonFive = new JButton("5");
+		this.buttonFive.addActionListener(this);
+
+		this.buttonSix = new JButton("6");
+		this.buttonSix.addActionListener(this);
+
+		this.buttonSeven = new JButton("7");
+		this.buttonSeven.addActionListener(this);
+
+		this.buttonEight = new JButton("8");
+		this.buttonEight.addActionListener(this);
+
+		this.buttonNine = new JButton("9");
+		this.buttonNine.addActionListener(this);
+
+		pad.add(this.buttonOne);
+		pad.add(this.buttonTwo);
+		pad.add(this.buttonThree);
+		pad.add(this.buttonFour);
+		pad.add(this.buttonFive);
+		pad.add(this.buttonSix);
+		pad.add(this.buttonSeven);
+		pad.add(this.buttonEight);
+		pad.add(this.buttonNine);
+		pad.add(this.buttonCancel);
+		pad.add(this.buttonZero);
+		pad.add(this.buttonEnter);
+		this.pinField = new JTextField();
+		this.pinField.setEditable(false);
+		this.pinField.setBackground(Color.WHITE);;
+		this.pinField.setFont(new Font("Arial", Font.PLAIN, 54));
+		this.pinField.setText("Pin Number");
+		this.runNumberScreen.add(this.pinField, BorderLayout.NORTH);
+		this.runNumberScreen.add(pad, BorderLayout.CENTER);
+
+	}
+
+	private void enterButton() {
+		gen = 2;
+		System.out.println("ENTER BUTTON HIT!");
+		this.current.setVisible(false);
+		this.current = this.actionScreen;
+		this.current.setVisible(true);
+		this.add(this.current);
+
+	}
+	/**
+	 * Resets the variables and returns you to the home screen.
+	 */
+	private void goToHomeScreen() {
+		gen = 0;
+		actionList.clear();
+		System.out.println("Cancel button hit");
+		this.current.setVisible(false);
+		this.current = this.startScreen;
+		this.current.setVisible(true);
+		this.add(current);
+	}
+
+	private void saveToFile() {
+		System.out.println("Saving...");
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(
+					this.runNumber + ".txt"));
+			for (Object s : this.actionList.getAll()) {
+				bw.write(s.toString());
+				bw.newLine();
+			}
+			bw.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private void endRunButton() {
+		saveToFile();
+		goToHomeScreen();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		String text = (((JButton) o).getText());
+		if (gen == 1) {
+			if (o.equals(this.buttonEnter)) {
+				this.enterButton();
+			} else if (o.equals(this.buttonCancel)) {
+				this.goToHomeScreen();
+			} else {
+				this.runNumber += text;
+				this.pinField.setText(this.runNumber);
+			}
+		}
+		if (o.equals(this.endRun)) {
+			endRunButton();
+		}
+		if (o.equals(this.start)){
+			startButton();
+		}
+	}
+}

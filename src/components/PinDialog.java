@@ -114,7 +114,8 @@ public class PinDialog extends JDialog implements ActionListener {
 			this.dispose();
 			return;
 		}
-		pinField.setText(pinField.getText() + "*");
+		pinField.setText(pinField.getText()
+				+ ((JButton) e.getSource()).getText());
 		this.currentPin += ((JButton) e.getSource()).getText();
 	}
 
