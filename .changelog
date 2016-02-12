@@ -1,5 +1,11 @@
-
-
+20160212102700
+Removed everything except the following three classes:
+components.JaxList
+components.PinDialog
+rebuild.Display
+This is probably the saddest commit I will ever actually make. This loss of months of work is a
+assive setback and, although I want to say it's not my fault, the blame mostly rests on myself.
+-8.8
 
 Removing main function in EMT
 Made access modifiers in EMT slightly more restrictive.
