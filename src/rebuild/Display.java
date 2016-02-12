@@ -16,20 +16,9 @@ public class Display extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 7070175919870901366L;
 	private JPanel startScreen, runNumberScreen, actionScreen, current;
-	private JButton start;
-	private JButton buttonOne;
-	private JButton buttonTwo;
-	private JButton buttonThree;
-	private JButton buttonFour;
-	private JButton buttonFive;
-	private JButton buttonSix;
-	private JButton buttonSeven;
-	private JButton buttonEight;
-	private JButton buttonNine;
-	private JButton buttonCancel;
-	private JButton buttonZero;
-	private JButton buttonEnter;
-	private JButton endRun;
+	private JButton start, buttonOne, buttonTwo, buttonThree, buttonFour,
+			buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine,
+			buttonCancel, buttonZero, buttonEnter, endRun;
 	private JButton[] actionButtons = { new JButton("Button"),
 			new JButton("Button"), new JButton("Button"),
 			new JButton("Button"), new JButton("Button"),
@@ -100,7 +89,7 @@ public class Display extends JFrame implements ActionListener {
 		this.actionScreen.add(rightSide, BorderLayout.EAST);
 		this.actionScreen.add(LeftSide, BorderLayout.CENTER);
 	}
-	
+
 	/**
 	 * Invoked when the user hits the start button.
 	 */
@@ -232,7 +221,6 @@ public class Display extends JFrame implements ActionListener {
 		}
 		System.out.println("Done.");
 	}
-
 
 	/**
 	 * Is called when the user hits the end run button on the Action Screen
