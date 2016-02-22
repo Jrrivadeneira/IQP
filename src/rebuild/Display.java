@@ -1,7 +1,6 @@
 package rebuild;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,14 +18,15 @@ public class Display extends JFrame implements ActionListener {
 	private JButton start, buttonOne, buttonTwo, buttonThree, buttonFour,
 			buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine,
 			buttonCancel, buttonZero, buttonEnter, endRun;
-	private JButton[] actionButtons = { new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"),
-			new JButton("Button"), new JButton("Button"), new JButton("Button") };
+	private JButton[] actionButtons = { new JButton("Oxygen"),
+			new JButton("Manual CPR"), new JButton("Lucas CPR"),
+			new JButton("IV Hookup"), new JButton("Fluids Administered"),
+			new JButton("Aspirin"), new JButton("Oral Meds Administered"),
+			new JButton("IV Meds Administered"), new JButton("Epinephrine"),
+			new JButton("Backboard"), new JButton("Spine Immobilized"),
+			new JButton("Morphine"), new JButton("AED"),
+			new JButton("Nebulizer"), new JButton("Button"),
+			new JButton("Button") };
 
 	private JTextField pinField;
 	private int gen = 0;
@@ -64,19 +64,37 @@ public class Display extends JFrame implements ActionListener {
 		JPanel buttonPanel = new JPanel();// button panel
 		buttonPanel.setLayout(new GridLayout(4, 4));
 		for (JButton eachButton : this.actionButtons) {
-			eachButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					String text = ((JButton) e.getSource()).getText() + "_"
-							+ System.currentTimeMillis();
-					actionList.addToList(text);
-				}
-			});
+			eachButton
+					.addActionListener(ext -> {
+						long time = System.currentTimeMillis();
+						int seconds = (int) ((time / 1000) % 60);
+						int minutes = (int) ((time / 1000) / 60) % 60;
+						int hours = (int) ((time) / 1000 / 3600) % 24;
+						String tim = hours + ":" + minutes + ":" + seconds
+								+ "_UTC";
+						String text = ((JButton) ext.getSource()).getText()
+								+ "_" + tim;
+						actionList.addToList(text);
+
+					});
 			buttonPanel.add(eachButton);
 		}
+		LeftSide.add(buttonPanel, BorderLayout.CENTER);
+
 		JPanel typeArea = new JPanel();
 		typeArea.setLayout(new GridLayout(2, 5));
+		typeArea.add(new JButton(this.runNumber));
+		typeArea.add(new JButton("Age"));
+		typeArea.add(new JButton("Sex"));
+		typeArea.add(new JButton("Weight"));
+		typeArea.add(new JButton("Name"));
+		typeArea.add(new JButton("Button"));
+		typeArea.add(new JButton("Button"));
+		typeArea.add(new JButton("Button"));
+		typeArea.add(new JButton("Button"));
+		typeArea.add(new JButton("Button"));
+
 		typeArea.setPreferredSize(new Dimension(500, 300));
-		LeftSide.add(buttonPanel, BorderLayout.CENTER);
 		LeftSide.add(typeArea, BorderLayout.NORTH);
 
 		JPanel rightSide = new JPanel();// this will hold a list and a button
@@ -168,7 +186,6 @@ public class Display extends JFrame implements ActionListener {
 		this.pinField = new JTextField();
 		this.pinField.setEditable(false);
 		this.pinField.setBackground(Color.WHITE);
-		;
 		this.pinField.setFont(new Font("Arial", Font.PLAIN, 54));
 		this.pinField.setText("Pin Number");
 		this.runNumberScreen.add(this.pinField, BorderLayout.NORTH);
