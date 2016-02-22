@@ -137,57 +137,6 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Makes the scene for Home
-	 */
-	private void makeHomeScene() {
-		if (!restrictUsage)
-			return;
-		startButton = new Button();
-		startButton.setText("New Run");
-		startButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		startButton.setOnAction(e -> this.newRun());
-		startButton.setFont(large);
-
-		previousRuns = new Button();
-		previousRuns.setText("View \nPrevious \nRuns");
-		previousRuns.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		previousRuns.setFont(large);
-		previousRuns.setOnAction(e -> this.toPreviousRunsScreen());
-
-		exit = new Button();
-		exit.setText("Exit");
-		exit.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		exit.setOnAction(e -> this.dispose());
-		exit.setFont(large);
-
-		VBox v = new VBox();
-		v.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		v.setSpacing(10);
-		v.getChildren().add(startButton);
-
-		VBox v2 = new VBox();
-		v2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		v2.getChildren().add(previousRuns);
-		v2.getChildren().add(exit);
-
-		VBox.setVgrow(previousRuns, Priority.ALWAYS);
-		VBox.setVgrow(exit, Priority.ALWAYS);
-		VBox.setVgrow(startButton, Priority.ALWAYS);
-
-		HBox h = new HBox();
-		HBox.setHgrow(v, Priority.ALWAYS);
-		HBox.setHgrow(v2, Priority.ALWAYS);
-
-		h.setPadding(new Insets(10, 10, 10, 10));
-		h.setSpacing(10);
-		v2.setSpacing(10);
-		h.getChildren().add(v);
-		h.getChildren().add(v2);
-
-		homeScene = new Scene(h);
-	}
-
-	/**
 	 * Makes the scene for RunNumber
 	 */
 	private void makeRunNumberScene() {
