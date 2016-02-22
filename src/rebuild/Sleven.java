@@ -322,6 +322,10 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		});
 		SelectSex.getChildren().add(male);
 		SelectSex.getChildren().add(female);
+		this.previousRuns = new Button();
+		this.previousRuns.setText("View Previous Runs");
+		this.previousRuns.setOnAction(e -> this.toPreviousRunsScreen());
+		this.previousRuns.setFont(this.medium);
 		female.setSelected(true);
 		weight = new Label();
 		weight.setText("Weight: " + this.weightMeasurement);
@@ -332,7 +336,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		RunNumberButton.setText("Run Number");
 		RunNumberButton.setFont(this.medium);
 		RunNumberButton.setOnAction(e -> this.toRunNumberScreen());
-		nameAndDOB.getChildren().addAll(name, DOB, this.RunNumberButton);
+		nameAndDOB.getChildren().addAll(name, DOB, this.RunNumberButton,this.previousRuns);
 		dashboardLayout.getChildren().add(nameAndDOB);
 		dashboardLayout.getChildren().add(SelectSex);
 		dashboardLayout.getChildren().add(weight);
