@@ -40,6 +40,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 
 	// startscene
 	Button startButton, previousRuns, exit;
+	Button buttonSettings = new Button("Settings");
 
 	// runNumberScene
 	Button runNumberEnter, runNumberBackspace, runNumberClear, home;
@@ -336,7 +337,8 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		RunNumberButton.setText("Run Number");
 		RunNumberButton.setFont(this.medium);
 		RunNumberButton.setOnAction(e -> this.toRunNumberScreen());
-		nameAndDOB.getChildren().addAll(name, DOB, this.RunNumberButton,this.previousRuns);
+		buttonSettings.setFont(medium);
+		nameAndDOB.getChildren().addAll(name, DOB, this.RunNumberButton,this.buttonSettings);
 		dashboardLayout.getChildren().add(nameAndDOB);
 		dashboardLayout.getChildren().add(SelectSex);
 		dashboardLayout.getChildren().add(weight);
@@ -572,15 +574,6 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		ObservableList<String> clear = FXCollections.observableArrayList();
 		this.actionList.setItems(clear);
 		this.toHomeScreen();
-	}
-
-	/**
-	 * Called when the New Run button is hit
-	 */
-	private void newRun() {
-		runNumber = "";
-		this.runNumberField.setText("");
-		this.toRunNumberScreen();
 	}
 
 	/**
