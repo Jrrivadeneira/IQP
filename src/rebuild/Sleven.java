@@ -10,8 +10,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,62 +25,57 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class Sleven extends Application implements EventHandler<ActionEvent> {
+public class Sleven extends Application {
 
 	/**
 	 * Copyright
 	 */
-	Stage window;
-	boolean enableSave = true;
-	boolean restrictUsage = false;
+	private Stage window;
+	private boolean enableSave = true;
+	private boolean restrictUsage = false;
 
-	Scene homeScene, runNumberScene, previousRunsScene, ActionScreen;
+	private Scene runNumberScene, previousRunsScene, actionScene;
 
-	// startscene
-	Button startButton, previousRuns, exit;
-	Button buttonSettings = new Button("Settings");
+	private Button previousRuns;
+	private Button buttonSettings = new Button("Settings");
 
 	// runNumberScene
-	Button runNumberEnter, runNumberBackspace, runNumberClear, home;
-	Button[] numberButtons = { new Button("1"), new Button("4"),
+	private Button runNumberEnter, runNumberBackspace, runNumberClear,
+			runNumberHome;
+	private Button[] numberButtons = { new Button("1"), new Button("4"),
 			new Button("7"), new Button("2"), new Button("5"), new Button("8"),
 			new Button("3"), new Button("6"), new Button("9"), new Button("0"), };
 
 	// Action Screen
-	Button finishRun;
-	TextField runNumberField = new TextField();
-	String runNumber;
+	private Button finishRun;
+	private TextField runNumberField = new TextField();
+	private String runNumber;
 
-	// fentanyl?
-	// intubate?
-	// airway/breathing
-	// patient NEA
 	//
-	Button[] actionButtons = { new Button("Monitor"), new Button("12 lead"),
-			new Button("Oxygen"), new Button("Patient in EA"),
-			new Button("NTG"), new Button("CPR"), new Button("IV"),
-			new Button("Intubation"), new Button("Asprin"),
+	private Button[] actionButtons = { new Button("Monitor"),
+			new Button("12 lead"), new Button("Oxygen"),
+			new Button("Patient in EA"), new Button("NTG"), new Button("CPR"),
+			new Button("IV"), new Button("Intubation"), new Button("Asprin"),
 			new Button("Oral Meds"), new Button("IV Meds"),
 			new Button("Epinephrine"), new Button("Splinting"),
 			new Button("Morphine"), new Button("Benadryl"),
 			new Button("Vitals") };
-	Button DOB;
-	Button RunNumberButton;
+	private Button DOB;
+	private Button RunNumberButton;
 
 	// Patient Data
-	TextField name;
-	String dateOfBirth = "";
-	RadioButton male, female;
-	Label weight;
-	int weightMeasurement = 0;
+	private TextField name;
+	private String dateOfBirth = "";
+	private RadioButton male, female;
+	private Label weight;
+	private int weightMeasurement = 0;
 
-	ListView<String> listOfPreviousRuns;
-	Font large = new Font(72);
-	Font medium = new Font(36);
-	Font small = new Font(18);
-	ListView<String> actionList;
+	private ListView<String> listOfPreviousRuns;
+	private ListView<String> actionList;
+	private final Font large = new Font(72);
+	private final Font medium = new Font(36);
 
-	ChangeListener<String> dateFormatter = new ChangeListener<String>() {
+	private ChangeListener<String> dateFormatter = new ChangeListener<String>() {
 		public void changed(ObservableValue<? extends String> arg0,
 				String arg1, String arg2) {
 			String text = runNumberField.getText();
@@ -205,26 +198,26 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		layout.add(this.numberButtons[7], 2, 1);
 		layout.add(this.numberButtons[8], 2, 2);
 		layout.add(this.numberButtons[9], 1, 3);
-		home = new Button();
-		home.setText("Home");
-		home.setOnAction(e -> this.toHomeScreen());
-		home.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		home.setFont(large);
+		runNumberHome = new Button();
+		runNumberHome.setText("Home");
+		runNumberHome.setOnAction(e -> this.toHomeScreen());
+		runNumberHome.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		runNumberHome.setFont(large);
 		runNumberEnter = new Button();
 		runNumberEnter.setText("Enter");
 		runNumberEnter.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		runNumberEnter.setFont(large);
 		runNumberEnter.setOnAction(e -> setRunNumber());
 
-		GridPane.setHgrow(home, Priority.ALWAYS);
-		GridPane.setVgrow(home, Priority.ALWAYS);
+		GridPane.setHgrow(runNumberHome, Priority.ALWAYS);
+		GridPane.setVgrow(runNumberHome, Priority.ALWAYS);
 
 		GridPane.setHgrow(runNumberEnter, Priority.ALWAYS);
 		GridPane.setVgrow(runNumberEnter, Priority.ALWAYS);
 
 		VBox.setVgrow(layout, Priority.ALWAYS);
 
-		layout.add(this.home, 0, 3);
+		layout.add(this.runNumberHome, 0, 3);
 		layout.add(runNumberEnter, 2, 3);
 		layout.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -321,13 +314,13 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 			male.setSelected(false);
 			female.setSelected(true);
 		});
-		SelectSex.getChildren().add(male);
-		SelectSex.getChildren().add(female);
+//		SelectSex.getChildren().add(male);
+//		SelectSex.getChildren().add(female);
 		this.previousRuns = new Button();
 		this.previousRuns.setText("View Previous Runs");
 		this.previousRuns.setOnAction(e -> this.toPreviousRunsScreen());
 		this.previousRuns.setFont(this.medium);
-		female.setSelected(true);
+//		female.setSelected(true);
 		weight = new Label();
 		weight.setText("Weight: " + this.weightMeasurement);
 		weight.setFont(medium);
@@ -338,10 +331,11 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		RunNumberButton.setFont(this.medium);
 		RunNumberButton.setOnAction(e -> this.toRunNumberScreen());
 		buttonSettings.setFont(medium);
-		nameAndDOB.getChildren().addAll(name, DOB, this.RunNumberButton,this.buttonSettings);
+		nameAndDOB.getChildren()
+				.addAll(this.RunNumberButton, this.previousRuns);
 		dashboardLayout.getChildren().add(nameAndDOB);
 		dashboardLayout.getChildren().add(SelectSex);
-		dashboardLayout.getChildren().add(weight);
+//		dashboardLayout.getChildren().add(weight);
 		leftSide.getChildren().add(dashboardLayout);
 		int width = 4;
 		int i = 0;
@@ -392,7 +386,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 
 		layout.getChildren().add(leftSide);
 		layout.getChildren().add(rightSide);
-		this.ActionScreen = new Scene(layout);
+		this.actionScene = new Scene(layout);
 	}
 
 	/**
@@ -427,8 +421,8 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		this.runNumberField.setPromptText("DDMMYYYY");
 		this.runNumberField.textProperty().addListener(this.dateFormatter);
 		this.runNumberEnter.setOnAction(e -> setDateOfBirth());
-		this.home.setText("Back");
-		this.home.setOnAction(e -> toActionScreen());
+		this.runNumberHome.setText("Back");
+		this.runNumberHome.setOnAction(e -> toActionScreen());
 		this.window.setScene(this.runNumberScene);
 	}
 
@@ -443,8 +437,8 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		this.runNumberField.setText("");
 		this.runNumberField.setPromptText("Enter Run Number");
 		this.runNumberEnter.setOnAction(e -> setRunNumber());
-		this.home.setText("Home");
-		this.home.setOnAction(e -> toHomeScreen());
+		this.runNumberHome.setText("Home");
+		this.runNumberHome.setOnAction(e -> toHomeScreen());
 		this.window.setScene(this.runNumberScene);
 	}
 
@@ -453,7 +447,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 	 */
 	private void toActionScreen() {
 		// setRunNumber();
-		this.window.setScene(this.ActionScreen);
+		this.window.setScene(this.actionScene);
 		DOB.requestFocus();
 
 	}
@@ -473,7 +467,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		this.name.setText("");
 		this.runNumber = "";
 		// window.setScene(this.homeScene);
-		window.setScene(this.ActionScreen);
+		window.setScene(this.actionScene);
 	}
 
 	/**
@@ -591,7 +585,7 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 		window.setTitle("Rebuild");
 		window.setWidth(Double.MAX_VALUE);
 		window.setHeight(Double.MAX_VALUE);
-		
+
 		this.makeRunNumberScene();
 		this.makePreviousRunsScene();
 		this.makeActionScene();
@@ -599,17 +593,8 @@ public class Sleven extends Application implements EventHandler<ActionEvent> {
 			e.consume();
 			dispose();
 		});
-		window.setScene(this.ActionScreen);
+		window.setScene(this.actionScene);
 		window.show();
-	}
-
-	/**
-	 * Handles action events passed to it.
-	 */
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		System.out.println("Hello Everyone!");
-		source.toString();
 	}
 
 }
