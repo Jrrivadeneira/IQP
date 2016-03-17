@@ -3,6 +3,7 @@ package rebuild;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Optional;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -13,11 +14,13 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -30,6 +33,7 @@ public class Sleven extends Application {
 	/**
 	 * Copyright
 	 */
+
 	private Stage window;
 	private boolean enableSave = true;
 	private boolean restrictUsage = false;
@@ -51,22 +55,31 @@ public class Sleven extends Application {
 	private TextField runNumberField = new TextField();
 	private String runNumber;
 
+	private String[] actionButtonLabels = { "Monitor", "12 lead", "Oxygen",
+			"Patient in EA", "NTG", "CPR", "IV", "Intubation", "Asprin",
+			"Oral Meds", "IV Meds", "Epinephrine", "Splinting", "Morphine",
+			"Benadryl", "Vitals" };
 	//
-	private Button[] actionButtons = { new Button("Monitor"),
-			new Button("12 lead"), new Button("Oxygen"),
-			new Button("Patient in EA"), new Button("NTG"), new Button("CPR"),
-			new Button("IV"), new Button("Intubation"), new Button("Asprin"),
-			new Button("Oral Meds"), new Button("IV Meds"),
-			new Button("Epinephrine"), new Button("Splinting"),
-			new Button("Morphine"), new Button("Benadryl"),
-			new Button("Vitals") };
+	private Button[] actionButtons = { new Button(actionButtonLabels[0]),
+			new Button(actionButtonLabels[1]),
+			new Button(actionButtonLabels[2]),
+			new Button(actionButtonLabels[3]),
+			new Button(actionButtonLabels[4]),
+			new Button(actionButtonLabels[5]),
+			new Button(actionButtonLabels[6]),
+			new Button(actionButtonLabels[7]),
+			new Button(actionButtonLabels[8]),
+			new Button(actionButtonLabels[9]),
+			new Button(actionButtonLabels[10]),
+			new Button(actionButtonLabels[11]),
+			new Button(actionButtonLabels[12]),
+			new Button(actionButtonLabels[13]),
+			new Button(actionButtonLabels[14]),
+			new Button(actionButtonLabels[15]) };;
 	private Button DOB;
 	private Button RunNumberButton;
 
 	// Patient Data
-	private TextField name;
-	private String dateOfBirth = "";
-	private RadioButton male, female;
 	private Label weight;
 	private int weightMeasurement = 0;
 
@@ -130,6 +143,20 @@ public class Sleven extends Application {
 		launch(args);
 	}
 
+
+	/**
+	 * sets up the configuration for the action buttons
+	 * loads the config file.
+	 */
+	private void setActionButtons() {
+		this.loadConfigFile();
+		int i = 0;
+		for (Button b : this.actionButtons) {
+			b.setText(actionButtonLabels[i]);
+			i++;
+		}
+	}
+
 	/**
 	 * Makes the scene for RunNumber
 	 */
@@ -160,9 +187,7 @@ public class Sleven extends Application {
 			txt = txt.substring(0, txt.length() - 1);
 			runNumberField.setText(txt);
 		});
-
 		HBox.setHgrow(runNumberBackspace, Priority.ALWAYS);
-
 		runNumberClear = new Button();
 		runNumberClear.setText("X");
 		runNumberClear.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -272,6 +297,7 @@ public class Sleven extends Application {
 	 * Makes the scene for Action
 	 */
 	private void makeActionScene() {
+		this.setActionButtons();
 		HBox layout = new HBox();
 		layout.setPadding(new Insets(10, 10, 10, 10));
 		layout.setSpacing(10);
@@ -283,44 +309,20 @@ public class Sleven extends Application {
 		actionLayout.setVgap(10);
 		VBox dashboardLayout = new VBox();
 		dashboardLayout.setSpacing(10);
-		// dashboardLayout.setPadding(new Insets(10,10,10,10));
-
+		// dashboardLayout.setPadding(new Insets(10, 10, 10, 10));
 		dashboardLayout.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		VBox.setVgrow(dashboardLayout, Priority.ALWAYS);
-		name = new TextField();
-		name.setFont(medium);
-		name.setPromptText("Name");
 		DOB = new Button();
 		DOB.setText("Date of Birth");
 		DOB.setFont(medium);
 		DOB.setOnAction(e -> this.toDateOfBirthScreen());
-		male = new RadioButton();
 		HBox SelectSex = new HBox();
 		SelectSex.setSpacing(10);
-		male.setText("Male");
-		male.setFont(medium);
-		male.setOnAction(e -> {
-			if (male.isSelected())
-				e.consume();
-			female.setSelected(false);
-			male.setSelected(true);
-		});
-		female = new RadioButton();
-		female.setText("Female");
-		female.setFont(medium);
-		female.setOnAction(e -> {
-			if (female.isSelected())
-				e.consume();
-			male.setSelected(false);
-			female.setSelected(true);
-		});
-//		SelectSex.getChildren().add(male);
-//		SelectSex.getChildren().add(female);
 		this.previousRuns = new Button();
 		this.previousRuns.setText("View Previous Runs");
 		this.previousRuns.setOnAction(e -> this.toPreviousRunsScreen());
 		this.previousRuns.setFont(this.medium);
-//		female.setSelected(true);
+		// female.setSelected(true);
 		weight = new Label();
 		weight.setText("Weight: " + this.weightMeasurement);
 		weight.setFont(medium);
@@ -331,11 +333,11 @@ public class Sleven extends Application {
 		RunNumberButton.setFont(this.medium);
 		RunNumberButton.setOnAction(e -> this.toRunNumberScreen());
 		buttonSettings.setFont(medium);
+
 		nameAndDOB.getChildren()
-				.addAll(this.RunNumberButton, this.previousRuns);
+				.addAll(this.previousRuns, this.RunNumberButton);
+
 		dashboardLayout.getChildren().add(nameAndDOB);
-		dashboardLayout.getChildren().add(SelectSex);
-//		dashboardLayout.getChildren().add(weight);
 		leftSide.getChildren().add(dashboardLayout);
 		int width = 4;
 		int i = 0;
@@ -357,7 +359,6 @@ public class Sleven extends Application {
 					int dex = text.indexOf("\n");
 					text = text.substring(0, dex) + " "
 							+ text.substring(dex + 1);
-
 				}
 				ol.add(text + "_" + tim);
 				this.actionList.setItems(ol);
@@ -369,21 +370,85 @@ public class Sleven extends Application {
 
 		// right side
 		actionList = new ListView<String>();
-		actionList.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		rightSide.getChildren().add(actionList);
+		// actionList.setCellFactory(ex -> {
 
+		// return null;
+		// });
+		actionList.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		ContextMenu cm = new ContextMenu();
+		MenuItem mistake = new MenuItem("Mistake");
+		MenuItem wrongAction = new MenuItem("Wrong Intervention");
+		MenuItem comment = new MenuItem("Add Comment");
+
+		cm.getItems().addAll(mistake, wrongAction, comment);
+
+		actionList.setContextMenu(cm);
+		actionList
+				.setOnTouchStationary(e -> {
+					int index = actionList.getSelectionModel()
+							.getSelectedIndex();
+					mistake.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						s += " ***MISTAKE***";
+						actionList.getItems().set(index, s);
+					});
+					wrongAction.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						s += " ***WRONG INTERVENTION***";
+						actionList.getItems().set(index, s);
+					});
+					comment.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						TextInputDialog tid = new TextInputDialog(
+								"Enter your comment");
+						tid.setTitle("Comment");
+						Optional<String> result = tid.showAndWait();
+						if (result.isPresent()) {
+							s += "\tComment: " + result.get();
+						}
+						actionList.getItems().set(index, s);
+					});
+					actionList.getContextMenu().show(this.window);
+				});
+		actionList
+				.setOnContextMenuRequested(e -> {
+					int index = actionList.getSelectionModel()
+							.getSelectedIndex();
+					mistake.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						s += " ***MISTAKE***";
+						actionList.getItems().set(index, s);
+					});
+					wrongAction.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						s += " ***WRONG INTERVENTION***";
+						actionList.getItems().set(index, s);
+					});
+					comment.setOnAction(ex -> {
+						String s = actionList.getItems().get(index);
+						TextInputDialog tid = new TextInputDialog(
+								"Enter your comment");
+						tid.setTitle("Comment");
+						Optional<String> result = tid.showAndWait();
+						if (result.isPresent()) {
+							s += "\tComment: " + result.get();
+						}
+						actionList.getItems().set(index, s);
+
+					});
+				});
+
+		rightSide.getChildren().add(actionList);
 		finishRun = new Button();
 		finishRun.setText("End Run");
 		finishRun.setFont(large);
 		finishRun.setOnAction(e -> this.endRun());
 		finishRun.setMaxWidth(Double.MAX_VALUE);
 		rightSide.getChildren().add(finishRun);
-
 		VBox.setVgrow(finishRun, Priority.ALWAYS);
 		VBox.setVgrow(actionList, Priority.ALWAYS);
 		HBox.setHgrow(leftSide, Priority.ALWAYS);
 		HBox.setHgrow(rightSide, Priority.ALWAYS);
-
 		layout.getChildren().add(leftSide);
 		layout.getChildren().add(rightSide);
 		this.actionScene = new Scene(layout);
@@ -406,7 +471,6 @@ public class Sleven extends Application {
 	 * to the action screen
 	 */
 	private void setDateOfBirth() {
-		this.dateOfBirth = runNumberField.getText();
 		this.toActionScreen();
 	}
 
@@ -464,10 +528,19 @@ public class Sleven extends Application {
 	 * Shows the home screen
 	 */
 	private void toHomeScreen() {
-		this.name.setText("");
+		// this.name.setText("");
 		this.runNumber = "";
 		// window.setScene(this.homeScene);
 		window.setScene(this.actionScene);
+	}
+
+	/**
+	 * This is where the run number is passed to the program by the server.
+	 * 
+	 * @param newRunNumber
+	 */
+	protected void setRunNumber(String newRunNumber) {
+		this.runNumber = newRunNumber;
 	}
 
 	/**
@@ -485,7 +558,7 @@ public class Sleven extends Application {
 					listOfFiles.add(s);
 			}
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 	}
 
@@ -520,14 +593,6 @@ public class Sleven extends Application {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(fn + ".APIN"));
 			bw.write("Run: " + runNumber);
 			bw.newLine();
-			bw.write("Name: " + this.name.getText());
-			bw.newLine();
-			bw.write("Date Of Birth: " + this.dateOfBirth);
-			bw.newLine();
-			bw.write("Weight: " + this.weightMeasurement);
-			bw.newLine();
-			bw.write("Sex: " + (this.male.isSelected() ? "Male" : "Female"));
-			bw.newLine();
 			for (String s : this.actionList.getItems()) {
 				bw.write(s);
 				bw.newLine();
@@ -537,6 +602,42 @@ public class Sleven extends Application {
 			ex.printStackTrace();
 		}
 		System.out.println("Done.");
+	}
+
+
+	/**
+	 * Saves the configuration file
+	 */
+	private void saveConfigFile() {
+		String fn = "config";
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(fn));
+			for (String line : this.actionButtonLabels) {
+				bw.write(line);
+				bw.newLine();
+			}
+			bw.close();
+		} catch (Exception ex) {
+		}
+	}
+
+	/**
+	 * Loads the configuration file
+	 */
+	private void loadConfigFile() {
+		try {
+			Scanner scan = new Scanner(new File("config"));
+			this.actionButtonLabels = new String[16];
+
+			int i = 0;
+			while (scan.hasNext()) {
+				actionButtonLabels[i] = scan.nextLine();
+				i++;
+			}
+			scan.close();
+		} catch (Exception ex) {
+			saveConfigFile();
+		}
 	}
 
 	/**
@@ -596,5 +697,4 @@ public class Sleven extends Application {
 		window.setScene(this.actionScene);
 		window.show();
 	}
-
 }
