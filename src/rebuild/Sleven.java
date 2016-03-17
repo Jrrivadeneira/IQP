@@ -37,7 +37,7 @@ public class Sleven extends Application {
 	private Stage window;
 	private boolean enableSave = true;
 	private boolean restrictUsage = false;
-
+	private boolean alive = true;
 	private Scene runNumberScene, previousRunsScene, actionScene;
 
 	private Button previousRuns;
@@ -54,7 +54,7 @@ public class Sleven extends Application {
 	private Button finishRun;
 	private TextField runNumberField = new TextField();
 	private String runNumber;
-
+	private int timeAdjustment = 0;
 	private String[] actionButtonLabels = { "Monitor", "12 lead", "Oxygen",
 			"Patient in EA", "NTG", "CPR", "IV", "Intubation", "Asprin",
 			"Oral Meds", "IV Meds", "Epinephrine", "Splinting", "Morphine",
@@ -87,6 +87,24 @@ public class Sleven extends Application {
 	private ListView<String> actionList;
 	private final Font large = new Font(72);
 	private final Font medium = new Font(36);
+
+	private void correctButtonsState() {
+		new Thread() {
+			public void run() {
+				for (Button b : actionButtons)
+					b.setDisable(true);
+				finishRun.setDisable(true);
+				while ((runNumber == null || runNumber.equals("")) && alive)
+					try {
+						Thread.sleep(100);
+					} catch (Exception ex) {
+					}
+				for (Button b : actionButtons)
+					b.setDisable(false);
+				finishRun.setDisable(false);
+			}
+		}.start();
+	}
 
 	private ChangeListener<String> dateFormatter = new ChangeListener<String>() {
 		public void changed(ObservableValue<? extends String> arg0,
@@ -143,10 +161,8 @@ public class Sleven extends Application {
 		launch(args);
 	}
 
-
 	/**
-	 * sets up the configuration for the action buttons
-	 * loads the config file.
+	 * Sets up the configuration for the action buttons loads the config file.
 	 */
 	private void setActionButtons() {
 		this.loadConfigFile();
@@ -342,26 +358,62 @@ public class Sleven extends Application {
 		int width = 4;
 		int i = 0;
 		for (Button b : actionButtons) {
+			if (b.getText().endsWith("$")) {
+				b.setText(b.getText().substring(0, b.getText().length() - 1)
+						+ "\nON");
+			}
+
+			String text = b.getText();
 			b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			GridPane.setHgrow(b, Priority.ALWAYS);
 			GridPane.setVgrow(b, Priority.ALWAYS);
 			actionLayout.add(b, i % width, i / width);
 			b.setFont(medium);
+
 			b.setOnAction(e -> {
+				if (runNumber == null || runNumber.equals(""))
+					return;
 				long time = System.currentTimeMillis();
 				int seconds = (int) ((time / 1000) % 60);
 				int minutes = (int) ((time / 1000) / 60) % 60;
-				int hours = (int) ((time) / 1000 / 3600) % 24;
-				String tim = hours + ":" + minutes + ":" + seconds + "_UTC";
+				int hours = (int) (((time) / 1000 / 3600) % 24)
+						+ this.timeAdjustment;
+				String tz = "_UTC";
+				if (this.timeAdjustment >= 0)
+					tz += "+" + this.timeAdjustment;
+				else
+					tz += this.timeAdjustment;
+				String tim = hours + ":" + minutes + ":" + seconds + tz;
 				ObservableList<String> ol = actionList.getItems();
-				String text = b.getText();
+				String text2 = text;
 				if (text.contains("\n")) {
 					int dex = text.indexOf("\n");
-					text = text.substring(0, dex) + " "
+					text2 = text.substring(0, dex) + " "
 							+ text.substring(dex + 1);
 				}
-				ol.add(text + "_" + tim);
+
+				String fin = "";
+				boolean isToggle = false;
 				this.actionList.setItems(ol);
+				if (b.getText().endsWith("\nON")) {
+					isToggle = true;
+					fin = b.getText().substring(0, b.getText().length() - 3)
+							+ " ON";
+					b.setText(b.getText()
+							.substring(0, b.getText().length() - 3) + "\nOFF");
+				} else if (b.getText().endsWith("\nOFF")) {
+					isToggle = true;
+					fin = b.getText().substring(0, b.getText().length() - 4)
+							+ " OFF";
+					b.setText(b.getText()
+							.substring(0, b.getText().length() - 4) + "\nON");
+				}
+
+				if (isToggle)
+					ol.add(fin + "_" + tim);
+				else
+					ol.add(text2 + "_" + tim);
+
 			});
 			i++;
 		}
@@ -389,7 +441,7 @@ public class Sleven extends Application {
 							.getSelectedIndex();
 					mistake.setOnAction(ex -> {
 						String s = actionList.getItems().get(index);
-						s += " ***MISTAKE***";
+						s += " ***MISCLICK***";
 						actionList.getItems().set(index, s);
 					});
 					wrongAction.setOnAction(ex -> {
@@ -452,6 +504,7 @@ public class Sleven extends Application {
 		layout.getChildren().add(leftSide);
 		layout.getChildren().add(rightSide);
 		this.actionScene = new Scene(layout);
+		this.correctButtonsState();
 	}
 
 	/**
@@ -459,10 +512,12 @@ public class Sleven extends Application {
 	 * action screen
 	 */
 	private void setRunNumber() {
-
 		this.runNumber = runNumberField.getText();
 		if (this.runNumber.equals("") && restrictUsage)
 			return;
+		ObservableList<String> ol = actionList.getItems();
+		ol.addAll(this.runNumber);
+		this.actionList.setItems(ol);
 		this.toActionScreen();
 	}
 
@@ -551,11 +606,15 @@ public class Sleven extends Application {
 			ObservableList<String> listOfFiles = FXCollections
 					.observableArrayList();
 			listOfPreviousRuns.setItems(listOfFiles);
+			int i = 0;
 			for (File f : new File(".").listFiles()) {
+				if (i > 100)
+					break;
 				String s = f.getName();
 				if (s.toUpperCase().endsWith(".APIN")
 						&& !s.toUpperCase().equals(".APIN"))
 					listOfFiles.add(s);
+				i++;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -604,7 +663,6 @@ public class Sleven extends Application {
 		System.out.println("Done.");
 	}
 
-
 	/**
 	 * Saves the configuration file
 	 */
@@ -616,6 +674,7 @@ public class Sleven extends Application {
 				bw.write(line);
 				bw.newLine();
 			}
+			bw.write(this.timeAdjustment + "");
 			bw.close();
 		} catch (Exception ex) {
 		}
@@ -630,10 +689,11 @@ public class Sleven extends Application {
 			this.actionButtonLabels = new String[16];
 
 			int i = 0;
-			while (scan.hasNext()) {
+			while (i < actionButtons.length) {
 				actionButtonLabels[i] = scan.nextLine();
 				i++;
 			}
+			this.timeAdjustment = scan.nextInt();
 			scan.close();
 		} catch (Exception ex) {
 			saveConfigFile();
@@ -669,12 +729,15 @@ public class Sleven extends Application {
 		ObservableList<String> clear = FXCollections.observableArrayList();
 		this.actionList.setItems(clear);
 		this.toHomeScreen();
+		this.correctButtonsState();
+
 	}
 
 	/**
 	 * Called when the window requests close.
 	 */
 	private void dispose() {
+		alive = false;
 		window.close();
 	}
 
