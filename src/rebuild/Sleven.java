@@ -76,7 +76,6 @@ public class Sleven extends Application {
 			new Button(actionButtonLabels[13]),
 			new Button(actionButtonLabels[14]),
 			new Button(actionButtonLabels[15]) };;
-	private Button DOB;
 	private Button RunNumberButton;
 
 	// Patient Data
@@ -328,10 +327,6 @@ public class Sleven extends Application {
 		// dashboardLayout.setPadding(new Insets(10, 10, 10, 10));
 		dashboardLayout.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		VBox.setVgrow(dashboardLayout, Priority.ALWAYS);
-		DOB = new Button();
-		DOB.setText("Date of Birth");
-		DOB.setFont(medium);
-		DOB.setOnAction(e -> this.toDateOfBirthScreen());
 		HBox SelectSex = new HBox();
 		SelectSex.setSpacing(10);
 		this.previousRuns = new Button();
@@ -522,30 +517,6 @@ public class Sleven extends Application {
 	}
 
 	/**
-	 * sets the date of birth to the text in the runNumberField and then returns
-	 * to the action screen
-	 */
-	private void setDateOfBirth() {
-		this.toActionScreen();
-	}
-
-	/**
-	 * Shows the date of birth screen This screen is the same as the run number
-	 * screen but the onAction for the enter button has been changed to
-	 * setDateOfBirth()
-	 */
-	private void toDateOfBirthScreen() {
-		this.numberButtons[4].requestFocus();
-		this.runNumberField.setText("");
-		this.runNumberField.setPromptText("DDMMYYYY");
-		this.runNumberField.textProperty().addListener(this.dateFormatter);
-		this.runNumberEnter.setOnAction(e -> setDateOfBirth());
-		this.runNumberHome.setText("Back");
-		this.runNumberHome.setOnAction(e -> toActionScreen());
-		this.window.setScene(this.runNumberScene);
-	}
-
-	/**
 	 * Shows the run number screen This screen is the same as the Date of birth
 	 * screen but the onAction for the enter button has been changed to
 	 * setRunNumber()
@@ -567,8 +538,6 @@ public class Sleven extends Application {
 	private void toActionScreen() {
 		// setRunNumber();
 		this.window.setScene(this.actionScene);
-		DOB.requestFocus();
-
 	}
 
 	/**
@@ -749,7 +718,6 @@ public class Sleven extends Application {
 		window.setTitle("Rebuild");
 		window.setWidth(Double.MAX_VALUE);
 		window.setHeight(Double.MAX_VALUE);
-
 		this.makeRunNumberScene();
 		this.makePreviousRunsScene();
 		this.makeActionScene();
