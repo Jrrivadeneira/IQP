@@ -728,6 +728,7 @@ public class Sleven extends Application {
 		window.setScene(this.actionScene);
 		window.setMaximized(true);
 		window.setResizable(false);
+		
 		window.show();
 	}
 }
