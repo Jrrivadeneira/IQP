@@ -442,7 +442,7 @@ public class Sleven extends Application {
 					wrongAction.setOnAction(ex -> {
 						String s = actionList.getItems().get(index);
 						s += " ***WRONG INTERVENTION***";
-						actionList.getItems().set(index, s);
+						actionList.getItems().set(index, s); 
 					});
 					comment.setOnAction(ex -> {
 						String s = actionList.getItems().get(index);
@@ -726,6 +726,8 @@ public class Sleven extends Application {
 			dispose();
 		});
 		window.setScene(this.actionScene);
+		window.setMaximized(true);
+		window.setResizable(false);
 		window.show();
 	}
 }
