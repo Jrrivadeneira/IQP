@@ -25,6 +25,8 @@ class SelectHospitalDialog extends JDialog {
 		this.listOfHospitals = new JaxList();
 		Major.databaseManager.update(this.listOfHospitals);
 		this.add(this.listOfHospitals, BorderLayout.CENTER);
-
+		this.buttonCancel = new JButton("Cancel");
+		this.buttonCancel.setName("cancel");
+		this.add(buttonCancel, BorderLayout.SOUTH);
 	}
 }
